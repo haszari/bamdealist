@@ -1,0 +1,15 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 3
+
+[*.md]
+indent_size = 2
+
+[package.json]
+indent_style = space
+indent_size = 2
+

@@ -1,0 +1,30 @@
+
+@media print {
+
+   // disable Foundation's link location helper thing
+   a[href]:after {
+      content: none !important;
+   }
+
+   // hide buttons etc
+   button, html [type="button"], [type="reset"], [type="submit"] {
+      display: none;
+   }
+   [type='text'], [type='password'], [type='date'], [type='datetime'], 
+   [type='datetime-local'], [type='month'], [type='week'], 
+   [type='email'], [type='number'], [type='search'], 
+   [type='tel'], [type='time'], [type='url'], [type='color'], 
+   textarea, input {
+      display: none;
+   }
+
+   // don't underline links
+   a {
+      text-decoration: none;
+   }
+
+   // hide tags (we'll see whether I like this!)
+   .tag {
+      display: none;
+   }
+}

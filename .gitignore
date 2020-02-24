@@ -1,0 +1,9 @@
+
+node_modules
+dist
+npm-debug.log
+bamdealist-backup/*
+*.orig
+.env
+
+.hg

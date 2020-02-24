@@ -1,0 +1,187 @@
+
+<script type="text/html" id="itemView">
+   <form class="item-wrapper">
+     <div class="row">
+       <div class="columns">
+         <h4 data-bind='html: htmlTitle'></h4>
+       </div>
+       <div class="medium-1 columns text-right">
+         <button type="button" class="button" data-bind="click: editClicked">Edit</button>
+       </div>
+     </div>
+     <div class="row">
+       <div class="columns">
+         <div data-bind='html: htmlContent'></div>
+       </div>
+     </div>
+     <div class="row">
+       <div class="medium-12 columns text-center" data-bind="foreach: tags">
+         <div class="tag">
+            <a data-bind="
+               text: $data,
+               attr: { href: '/find/tags/' + $data },
+               title: 'posts about' + $data
+            "></a>
+         </div>
+       </div>
+     </div>
+     <div class="row">
+     </div>
+   </form>
+</script>
+
+
+<script type="text/html" id="itemEditForm">
+   <form class="item-editForm item-wrapper">
+     <div class="row">
+       <div class="columns">
+         <label>Title
+           <input type="text" data-bind='value: title'></input>
+         </label>
+       </div>
+     </div>
+     <div class="row">
+       <div class="columns">
+         <label>Content
+           <div class="markdownEditor" data-bind='aceEditor: content'></div>
+         </label>
+         <label>Tags
+           <input type="text" data-bind='value: userTags'></input>
+         </label>
+       </div>
+     </div>
+     <div class="row">
+      <div class="small-6 columns">
+         <button type="button" class="hollow button"
+            data-bind="click: cancelClicked">
+            Cancel
+         </button>
+      </div>
+      <div class="small-6 columns">
+         <button type="button" class="success button float-right"
+            data-bind="click: saveClicked">
+            Save
+         </button>
+      </div>
+     </div>
+   </form>
+</script>
+
+
+<section class="toolbar">
+
+   <div class="row">
+      <div class="small-2 columns">
+         <button type="button" class="button" data-bind="click: homeClicked">Home</button>
+      </div>
+      <div class="small-1 columns">
+         <button type="button" class="button" data-bind="click: listClicked">List</button>
+      </div>
+      <div class="small-1 columns">
+         <button type="button" class="button" data-bind="click: randomClicked">Random</button>
+      </div>
+      <div class="small-8 columns">
+         <button type="button" class="secondary button float-right"
+            data-bind="click: newClicked">
+            New
+         </button>
+      </div>
+   </div>
+
+</section>
+
+<section class="header">
+
+   <div class="row align-middle">
+      <div class="small-8 columns">
+         <!-- ko if: currentTags  -->
+         <h1>
+            <!-- ko foreach: currentTags -->
+              <span class="tag">
+                 <a data-bind="
+                    text: $data,
+                    attr: { href: '/find/tags/' + $data },
+                    title: 'posts about' + $data
+                 "></a>
+              </span>
+           <!-- /ko -->
+         </h1>
+         <!-- /ko -->
+      </div>
+      <div class="small-4 columns">
+         <form data-bind="event: { submit: onTextSearchSubmitted }">
+            <input type="text" placeholder="search" data-bind="value: currentTextSearch"></input>
+        </form>
+      </div>
+   </div>
+
+   <!-- ko if: relatedTags  -->
+   <div class="row">
+      <div class="small-12 columns">
+         <h6>
+            <!-- ko foreach: relatedTags -->
+              <span class="tag">
+                 <a data-bind="
+                    text: ($root.tagSearchActive() ? '+' : '') + tag,
+                    attr: {
+                       href: $root.currentTagUrl() + ($root.tagSearchActive() ? '+' : '') + tag + $root.currentTextSearchUrl()
+                    },
+                    title: 'posts about' + tag,
+                    style: { 'font-size':  $parent.tagCloudFontSize(count) }
+                 "></a>
+              </span>
+           <!-- /ko -->
+        </h6>
+      </div>
+   </div>
+   <!-- /ko -->
+
+</section>
+
+<!-- ko if: pageMode() == 'item'  -->
+<section class="itemEditor itemsList" data-bind="with: currentSingleItem">
+
+   <!-- ko ifnot: showEditForm  -->
+      <div class="itemRow" data-bind="template: {
+         name: 'itemView',
+         data: $data
+      }"></div>
+   <!-- /ko -->
+
+   <!-- ko if: showEditForm  -->
+      <div data-bind="template: {
+         name: 'itemEditForm',
+         data: $data
+      }"></div>
+   <!-- /ko -->
+
+</section>
+<!-- /ko -->
+
+<!-- ko if: pageMode() == 'list'  -->
+<section class="itemsList" data-bind="foreach: items">
+
+   <div class="itemRow" data-bind="template: {
+      name: 'itemView',
+      data: $data
+   }"></div>
+
+</section>
+
+<section class="footer">
+   <div class="row">
+      <div class="small-6 columns">
+         <button type="button" class="button"
+            data-bind="click: prevPageClicked">
+            Previous Page
+         </button>
+      </div>
+      <div class="small-6 columns">
+         <button type="button" class="button float-right"
+            data-bind="click: nextPageClicked">
+            Next Page
+         </button>
+      </div>
+   </div>
+</section>
+<!-- /ko -->

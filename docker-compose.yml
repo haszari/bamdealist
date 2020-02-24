@@ -1,0 +1,31 @@
+version: '3'
+
+services: 
+
+   mongo: 
+      image: 'mongo:latest'
+      restart: always
+      volumes:
+         - ./bamdealist-backup:/usr/src/backup
+
+   bamdealist: 
+      build: ./bamdealist-server
+      restart: always
+      depends_on: 
+         - 'mongo'
+      environment: 
+         - MONGO_HOST=mongo
+         - MONGO_DATABASE=bamdealist
+         - NODE_ENV=production
+         - INTERNAL_APP_PORT
+         - EXTERNAL_PROTOCOL
+         - EXTERNAL_HOSTNAME
+         - EXTERNAL_BIND_PORT
+         - SESSION_SECRET
+         - GOOGLE_OAUTH_CLIENT_ID
+         - GOOGLE_OAUTH_CLIENT_SECRET
+      ports: 
+         - '${EXTERNAL_BIND_PORT}:${INTERNAL_APP_PORT}' # note that we are doing localhost only here via port expose - will only want that for dev
+      volumes:
+         - ./bamdealist-server:/usr/src/app
+         - ./bamdealist-backup:/usr/src/backup

@@ -1,0 +1,76 @@
+
+
+// todo - use foundation variables to tweak this stuff :)
+body {
+	background: #15363c;
+	color: Seashell;
+}
+
+.markdownEditor {
+   width: 100%;
+   min-height: 300px;
+}
+
+$code-border-colour: rgba(202, 202, 202, 0.33);
+$code-background-colour: rgba(230, 230, 230, 0.33);
+$code-text-colour: #d2d2d2;
+
+code {
+   border: 1px solid $code-border-colour;
+   border-radius: 2px;
+   background-color: $code-background-colour;
+   color: $code-text-colour;
+   font-size: 90%;
+   white-space: pre-wrap;
+}
+
+pre {
+   border: 1px solid $code-border-colour;
+   border-radius: 2px;
+   background-color: $code-background-colour;
+   padding: 10px;
+   margin-bottom: 10px;
+}
+pre code {
+   border: none;
+   background-color: transparent;
+   font-size: 100%;
+}
+
+.tags {
+  text-align: center;
+}
+
+.tag {
+  display: inline-block;
+  margin: 2px;
+}
+.tag a, .tag h1 {
+  background-color: black;
+  color: white;
+  border-radius: 2px;
+  text-decoration: none;
+  padding: 2px 8px;
+  line-height: 170%
+}
+
+input[type=text] {
+	border-radius: 2px;
+}
+
+.itemsList .itemRow {
+   border-top: 3px solid #807f70;
+   padding-top: 8px;
+   padding-bottom: 8px;
+}
+
+.itemsList .itemRow:last-child {
+   border-bottom: 3px solid #807f70;
+}
+
+.itemsList .itemRow:nth-child(odd) {
+   background: #153110;
+}
+.itemsList .itemRow:nth-child(even) {
+   background: #380c0c;
+}

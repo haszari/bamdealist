@@ -1,0 +1,11 @@
+version: '3'
+
+services: 
+
+   bamdealist: 
+      # consider overriding port for dev/release
+
+      environment: 
+         - NODE_ENV=development
+
+
