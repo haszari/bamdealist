@@ -8,9 +8,12 @@ services:
       volumes:
          - ./bamdealist-backup:/usr/src/backup
 
-   bamdealist: 
-      build: ./bamdealist-server
-      restart: always
+   web: 
+      #build: ./bamdealist-server
+      image: 'node:latest'
+      # restart: always
+      working_dir: /usr/src/app
+      command: node server/server
       depends_on: 
          - 'mongo'
       environment: 
@@ -27,5 +30,5 @@ services:
       ports: 
          - '${EXTERNAL_BIND_PORT}:${INTERNAL_APP_PORT}' # note that we are doing localhost only here via port expose - will only want that for dev
       volumes:
-         - ./bamdealist-server:/usr/src/app
+         - ./:/usr/src/app
          - ./bamdealist-backup:/usr/src/backup

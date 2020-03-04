@@ -2,7 +2,7 @@ version: '3'
 
 services: 
 
-   bamdealist: 
+   web: 
       # consider overriding port for dev/release
 
       environment: 
