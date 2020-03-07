@@ -8,9 +8,9 @@ services:
       volumes:
          - ./bamdealist-backup:/usr/src/backup
 
-   web: 
-      #build: ./bamdealist-server
-      image: 'node:latest'
+   web:
+      image: 'node:latest' 
+      # build: ./docker
       # restart: always
       working_dir: /usr/src/app
       command: node server/server

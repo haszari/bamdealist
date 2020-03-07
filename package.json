@@ -19,8 +19,9 @@
     "react-scripts": "3.4.0"
   },
   "scripts": {
+    "docker:start": "docker-compose up -d",
+    "docker:start-production": "docker-compose -f docker-compose.yml up --build -d ",
     "import": "babel-node --presets es2015 src/server/scripts/import",
-    "db:start": "mongod --config /usr/local/etc/mongod.conf &",
     "server:start": "node server/server",
     "start": "react-scripts start",
     "build": "react-scripts build",
