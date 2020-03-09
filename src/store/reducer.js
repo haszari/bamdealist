@@ -16,6 +16,9 @@ const reducer = createReducer( DEFAULT_STATE, {
   [ actions.tagsReceived ]: ( state, action ) => {
     state.tags = action.payload;
   },
+  [ actions.itemsReceived ]: ( state, action ) => {
+    state.items = action.payload;
+  },
 } );
 
 export default reducer;

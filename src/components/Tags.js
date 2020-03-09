@@ -4,12 +4,11 @@ import { useSelector } from 'react-redux';
 import { getTags } from '../store/selectors';
 
 function Tags() {
-  // todo put this in store/selectors
   const tags = useSelector( getTags );
 
   return tags.map( ( tag ) => {
     const styles = {
-      fontSize: tag.count,
+      fontSize: tag.count / 10,
       display: 'inline-block',
       margin: '10px',
     };
