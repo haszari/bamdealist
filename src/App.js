@@ -1,37 +1,23 @@
-import React, { useState, useEffect } from 'react';
+
+import React from 'react';
+import { Provider } from 'react-redux';
+
+import store from './store/store';
+import { hydrateTags } from './store/actions';
+
 import Tags from './components/Tags';
 import './App.css';
 
+// Load our initial state.
+store.dispatch( hydrateTags() );
+
 function App() {
-  const [ tags, setTags ] = useState( [] );
-
-  // const loadTags = useCallback( () => {
-  // const loadTags = () => {
-  //   fetch( 'http://localhost:8947/api/v1/tags' ).then( (response) => {
-  //     return response.json();
-  //     // console.log( response );
-  //   } ).then( ( data ) => {
-  //     console.log( data );
-  //     setTags( data );
-  //   } );
-  // };
-  // }, [ ] );
-
-
-  useEffect ( () => {
-    fetch( 'http://localhost:8947/api/v1/tags' ).then( (response) => {
-      return response.json();
-      // console.log( response );
-    } ).then( ( data ) => {
-      console.log( data );
-      setTags( data );
-    } );
-  }, [] );
-
   return (
-    <div className="App">
-      <Tags tags={ tags } />
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Tags/>
+      </div>
+    </Provider>
   );
 }
 
