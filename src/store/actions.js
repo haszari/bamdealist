@@ -1,5 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 
+import { getPagination } from '../store/selectors';
+
 export const tagsReceived = createAction( 'transport/tagsReceived' );
 
 export const itemsReceived = createAction( 'transport/itemsReceived' );
@@ -11,8 +13,8 @@ const fetchTags = async () => {
   return response.json();
 }
 
-const fetchItems = async () => {
-  const response = await fetch( `${ apiBase }Item/?limit=10&sort={"originated":-1}` );
+const fetchItems = async ( { limit = 1, skip = 0 } ) => {
+  const response = await fetch( `${ apiBase }Item/?limit=${ limit }&skip=${ skip }&sort={"originated":-1}` );
   return response.json();
 }
 
@@ -22,8 +24,8 @@ export const hydrateTags = () => async dispatch => {
   dispatch( tagsReceived( response ) );
 }
 
-export const hydrateItems = () => async dispatch => {
+export const hydrateItems = () => async ( dispatch, state ) => {
   // todo dispatch a "isLoading" event
-  const response = await fetchItems();
+  const response = await fetchItems( getPagination( state() ) );
   dispatch( itemsReceived( response ) );
 }
