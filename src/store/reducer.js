@@ -23,6 +23,9 @@ const reducer = createReducer( DEFAULT_STATE, {
   [ actions.itemsReceived ]: ( state, action ) => {
     state.items = action.payload;
   },
+  [ actions.setPagination ]: ( state, action ) => {
+    state.pagination = action.payload;
+  },
 } );
 
 export default reducer;

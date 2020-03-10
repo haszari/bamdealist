@@ -6,6 +6,8 @@ export const tagsReceived = createAction( 'transport/tagsReceived' );
 
 export const itemsReceived = createAction( 'transport/itemsReceived' );
 
+export const setPagination = createAction( 'transport/setPagination' );
+
 const apiBase = 'http://localhost:8947/api/v1/';
 
 const fetchTags = async () => {
@@ -27,5 +29,27 @@ export const hydrateTags = () => async dispatch => {
 export const hydrateItems = () => async ( dispatch, state ) => {
   // todo dispatch a "isLoading" event
   const response = await fetchItems( getPagination( state() ) );
+  dispatch( itemsReceived( response ) );
+}
+
+export const goToPreviousPage = () => async ( dispatch, state ) => {
+  var { skip, limit } = getPagination( state() );
+  skip -= limit;
+  if ( skip < 0 ) {
+    skip = 0;
+  }
+  const pagination = { skip, limit };
+  const response = await fetchItems( pagination );
+  dispatch( setPagination( pagination ) );
+  dispatch( itemsReceived( response ) );
+}
+
+export const goToNextPage = () => async ( dispatch, state ) => {
+  var { skip, limit } = getPagination( state() );
+  skip += limit;
+  
+  const pagination = { skip, limit };
+  const response = await fetchItems( pagination );
+  dispatch( setPagination( pagination ) );
   dispatch( itemsReceived( response ) );
 }
