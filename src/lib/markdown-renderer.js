@@ -2,7 +2,7 @@
 
 const marked = require('marked');
 const hashtag = require('hashtag');
-const _ = require('underscore');
+const _ = require('lodash');
 
 let defaultTagBaseUrl = '/find/tags/';
 
@@ -15,10 +15,11 @@ var expandHashtags = function(md, tagBaseUrl) {
    var hashtags = hashtag.parse(md);
    var parserElements = hashtags.tokens;
    parserElements.map(element => {
-      if (element.type == 'text') {
+      if (element.type === 'text') {
          return element;
       }
       element.text = `[${element.tag}](${baseUrl}${element.tag})`;
+      return element;
    });
    expandedMd = _.reduce(parserElements, (memo, element) => {
       return memo + element.text;

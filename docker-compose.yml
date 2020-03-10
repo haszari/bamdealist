@@ -13,7 +13,7 @@ services:
       # build: ./docker
       # restart: always
       working_dir: /usr/src/app
-      command: node server/server
+      command: node src/server/server
       depends_on: 
          - 'mongo'
       environment: 
