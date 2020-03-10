@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import markdownRenderer from '../lib/markdown-renderer';
+
 import { getItems } from '../store/selectors';
 
 function Items() {
@@ -9,8 +11,12 @@ function Items() {
   return articles.map( ( item ) => {
     return (
       <div className='article' key={ item._id } >
-        <div className='title' >{ item.title }</div> 
-        <div className='content' >{ item.content }</div> 
+        <h2 className='title' dangerouslySetInnerHTML={{
+          __html:  markdownRenderer( item.title )
+        }} />
+        <div className='content'  dangerouslySetInnerHTML={{
+          __html:  markdownRenderer( item.content )
+        }} /> 
       </div> 
     );
   } );
