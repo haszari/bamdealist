@@ -6,9 +6,9 @@ import markdownRenderer from '../lib/markdown-renderer';
 import { getItems } from '../store/selectors';
 
 function Items() {
-  const articles = useSelector( getItems );
+  const items = useSelector( getItems );
 
-  return articles.map( ( item ) => {
+  const articles = items.map( ( item ) => {
     return (
       <div className='article' key={ item._id } >
         <h2 className='title' dangerouslySetInnerHTML={{
@@ -20,6 +20,12 @@ function Items() {
       </div> 
     );
   } );
+
+  return (
+     <div className='articles'>
+       { articles }
+     </div>
+  );
 }
 
 export default Items;
