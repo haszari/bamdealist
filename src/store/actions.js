@@ -17,8 +17,7 @@ export const setFilterTags = createAction( 'transport/setFilterTags' );
 
 const apiBase = 'http://localhost:8947/api/v1/';
 
-const fetchTags = async ( state ) => {
-  const { tags } = getFilter( state );
+const fetchTags = async ( { tags = [] } ) => {
   const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags ) );
   const response = await fetch( `${ apiBase }tags?query=${ mongoQuery }` );
   return response.json();
@@ -31,36 +30,41 @@ const fetchItems = async ( { limit = 1, skip = 0, tags = [] } ) => {
 }
 
 export const hydrateTags = () => async ( dispatch, state ) => {
-  const response = await fetchTags( state() );
+  const current = state();
+  const filter = getFilter( current );
+  const response = await fetchTags( filter );
   dispatch( tagsReceived( response ) );
 }
 
 export const hydrateItems = () => async ( dispatch, state ) => {
+  const current = state();
   const response = await fetchItems( {
-    ...getFilter( state() ),
-    ...getPagination( state() ),
+    ...getFilter( current ),
+    ...getPagination( current ),
    } );
   dispatch( itemsReceived( response ) );
 }
 
 export const goToPreviousPage = () => async ( dispatch, state ) => {
-  var { skip, limit } = getPagination( state() );
+  const current = state();
+  var { skip, limit } = getPagination( current );
   skip -= limit;
   if ( skip < 0 ) {
     skip = 0;
   }
-  const pagination = { skip, limit };
-  const response = await fetchItems( pagination );
-  dispatch( setPagination( pagination ) );
+  const filter = getFilter( current );
+  const response = await fetchItems( { skip, limit, ...filter } );
+  dispatch( setPagination( { skip, limit } ) );
   dispatch( itemsReceived( response ) );
 }
 
 export const goToNextPage = () => async ( dispatch, state ) => {
-  var { skip, limit } = getPagination( state() );
+  const current = state();
+  var { skip, limit } = getPagination( current );
   skip += limit;
-  
-  const pagination = { skip, limit };
-  const response = await fetchItems( pagination );
-  dispatch( setPagination( pagination ) );
+
+  const filter = getFilter( current );
+  const response = await fetchItems( { skip, limit, ...filter } );
+  dispatch( setPagination( { skip, limit } ) );
   dispatch( itemsReceived( response ) );
 }
