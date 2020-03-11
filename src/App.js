@@ -6,7 +6,7 @@ import store from './store/store';
 import { hydrateItems, hydrateTags } from './store/actions';
 
 import Pagination from './components/Pagination';
-import Tags from './components/Tags';
+import TagCloud from './components/TagCloud';
 import Items from './components/Items';
 import './App.css';
 
@@ -20,7 +20,7 @@ function App() {
       <div className='app'>
         <Pagination />
         <Items />
-        <Tags />
+        <TagCloud />
       </div>
     </Provider>
   );

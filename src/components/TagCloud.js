@@ -11,7 +11,7 @@ const tagFontSize = function( tagHitCount, maxHitCount ) {
   return size + minSize;
 };
 
-function Tags() {
+function TagCloud() {
   const tags = useSelector( getTags );
   if ( ! tags || ! tags.length ) {
     return null;
@@ -35,4 +35,4 @@ function Tags() {
   );
 }
 
-export default Tags;
+export default TagCloud;

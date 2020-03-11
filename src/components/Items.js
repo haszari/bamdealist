@@ -5,6 +5,8 @@ import markdownRenderer from '../lib/markdown-renderer';
 
 import { getItems } from '../store/selectors';
 
+import TagList from './TagList';
+
 function Items() {
   const items = useSelector( getItems );
 
@@ -17,6 +19,7 @@ function Items() {
         <div className='content'  dangerouslySetInnerHTML={{
           __html:  markdownRenderer( item.content )
         }} /> 
+        <TagList tags={ item.tags } /> 
       </div> 
     );
   } );
