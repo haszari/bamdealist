@@ -1,12 +1,19 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { getPagination } from '../store/selectors';
+import {
+  getPagination,
+  getFilter,
+} from '../store/selectors';
+
+import { formatMongoSearchQuery } from '../lib/mongo-query';
 
 export const tagsReceived = createAction( 'transport/tagsReceived' );
 
 export const itemsReceived = createAction( 'transport/itemsReceived' );
 
 export const setPagination = createAction( 'transport/setPagination' );
+
+export const setFilterTags = createAction( 'transport/setFilterTags' );
 
 const apiBase = 'http://localhost:8947/api/v1/';
 
@@ -15,8 +22,9 @@ const fetchTags = async () => {
   return response.json();
 }
 
-const fetchItems = async ( { limit = 1, skip = 0 } ) => {
-  const response = await fetch( `${ apiBase }Item/?limit=${ limit }&skip=${ skip }&sort={"originated":-1}` );
+const fetchItems = async ( { limit = 1, skip = 0, tags = [] } ) => {
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags ) );
+  const response = await fetch( `${ apiBase }Item/?limit=${ limit }&skip=${ skip }&sort={"originated":-1}&query=${ mongoQuery }` );
   return response.json();
 }
 
@@ -27,8 +35,10 @@ export const hydrateTags = () => async dispatch => {
 }
 
 export const hydrateItems = () => async ( dispatch, state ) => {
-  // todo dispatch a "isLoading" event
-  const response = await fetchItems( getPagination( state() ) );
+  const response = await fetchItems( {
+    ...getFilter( state() ),
+    ...getPagination( state() ),
+   } );
   dispatch( itemsReceived( response ) );
 }
 

@@ -3,6 +3,10 @@ import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
 
 const DEFAULT_STATE = {
+  filter: {
+    tags: '',
+    search: '',
+  },
   pagination: {
     limit: 12,
     skip: 0,
@@ -25,6 +29,9 @@ const reducer = createReducer( DEFAULT_STATE, {
   },
   [ actions.setPagination ]: ( state, action ) => {
     state.pagination = action.payload;
+  },
+  [ actions.setFilterTags ]: ( state, action ) => {
+    state.filter.tags = action.payload;
   },
 } );
 
