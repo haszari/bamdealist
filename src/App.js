@@ -32,18 +32,11 @@ function ListView() {
    );
 }
 
-function HydratedTagView() {
+function HydratedListView() {
   const { tags: plusDelimitedTags } = useParams();
-  const tags = plusDelimitedTags.split( '+' );
+  const tags = plusDelimitedTags ? plusDelimitedTags.split( '+' ) : [];
 
   store.dispatch( setFilterTags( tags ) );
-  store.dispatch( hydrateItems() );
-  store.dispatch( hydrateTags() );
-
-  return ( <ListView /> );
-}
-
-function HydratedListView() {
   store.dispatch( hydrateItems() );
   store.dispatch( hydrateTags() );
   return ( <ListView /> );
@@ -66,11 +59,8 @@ function App() {
           </ul>
 
           <Switch>
-            <Route path="/find/tags/:tags" children={ 
-              <HydratedTagView />
-            } />
-            <Route path="/" children={ 
-              <HydratedListView /> 
+            <Route path="(/find)?(/tags)?/:tags?" children={ 
+              <HydratedListView />
             } />
           </Switch>
         </div>
