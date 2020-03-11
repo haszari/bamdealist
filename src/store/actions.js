@@ -17,8 +17,10 @@ export const setFilterTags = createAction( 'transport/setFilterTags' );
 
 const apiBase = 'http://localhost:8947/api/v1/';
 
-const fetchTags = async () => {
-  const response = await fetch( `${ apiBase }tags` );
+const fetchTags = async ( state ) => {
+  const { tags } = getFilter( state );
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags ) );
+  const response = await fetch( `${ apiBase }tags?query=${ mongoQuery }` );
   return response.json();
 }
 
@@ -28,9 +30,8 @@ const fetchItems = async ( { limit = 1, skip = 0, tags = [] } ) => {
   return response.json();
 }
 
-export const hydrateTags = () => async dispatch => {
-  // todo dispatch a "isLoading" event
-  const response = await fetchTags();
+export const hydrateTags = () => async ( dispatch, state ) => {
+  const response = await fetchTags( state() );
   dispatch( tagsReceived( response ) );
 }
 
