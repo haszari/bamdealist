@@ -1,15 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { getTags } from '../store/selectors';
 
-const tagFontSize = function( tagHitCount, maxHitCount ) {
+function tagFontSize( tagHitCount, maxHitCount ) {
   const minSize = 8, sizeRange = 30;
   var size = 0;
   size = tagHitCount / maxHitCount;
   size = size * sizeRange;
   return size + minSize;
 };
+
+function tagUrl( tag ) {
+  const params = new URLSearchParams();
+  params.set( 'tag', tag );
+  const url = params.toString();
+  return `/?${ url }`;
+}
 
 function TagCloud() {
   const tags = useSelector( getTags );
@@ -24,7 +32,9 @@ function TagCloud() {
       fontSize: tagFontSize( tag.count, maxHitCount ),
     };
     return (
-      <div className='tag' style={ styles } key={ tag._id } >{ tag.tag }</div> 
+      <div className='tag' style={ styles } key={ tag._id } >
+        <Link to={ tagUrl( tag.tag ) }>{ tag.tag }</Link>
+      </div> 
     );
   } );
 
