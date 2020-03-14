@@ -1,16 +1,17 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
-  useParams,
-} from "react-router-dom";
+  useLocation,
+} from 'react-router-dom';
 
 import store from './store/store';
 import {
+  setPagination,
   setFilterTags,
   hydrateItems,
   hydrateTags,
@@ -21,6 +22,9 @@ import TagCloud from './components/TagCloud';
 import Items from './components/Items';
 import './App.css';
 
+function useQuery() {
+  return new URLSearchParams( useLocation().search );
+}
 
 function ListView() {
   return (
@@ -33,12 +37,17 @@ function ListView() {
 }
 
 function HydratedListView() {
-  const { tags: plusDelimitedTags } = useParams();
-  const tags = plusDelimitedTags ? plusDelimitedTags.split( '+' ) : [];
+  const queryParams = useQuery();
+  const tags = queryParams.getAll( 'tag' );
+  const skip = queryParams.get( 'skip' ) || 0;
 
-  store.dispatch( setFilterTags( tags ) );
-  store.dispatch( hydrateItems() );
-  store.dispatch( hydrateTags() );
+  useEffect( () => {
+    store.dispatch( setPagination( { skip } ) );
+    store.dispatch( setFilterTags( tags ) );
+    store.dispatch( hydrateItems() );
+    store.dispatch( hydrateTags() );
+  }, [ skip, tags ] );
+
   return ( <ListView /> );
 }
 
@@ -54,12 +63,15 @@ function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/find/tags/musiclistening">musiclistening</Link>
+              <Link to="/?tag=musiclistening">musiclistening</Link>
+            </li>
+            <li>
+              <Link to="/?tag=musiclistening&tag=hiphop">musiclistening+hiphop</Link>
             </li>
           </ul>
 
           <Switch>
-            <Route path="(/find)?(/tags)?/:tags?" children={ 
+            <Route path="/" children={ 
               <HydratedListView />
             } />
           </Switch>

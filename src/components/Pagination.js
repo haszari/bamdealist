@@ -1,15 +1,33 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { goToPreviousPage, goToNextPage } from '../store/actions';
+import { getPagination, getFilter } from '../store/selectors';
 
 function Pagination() {
-  const dispatch = useDispatch();
+  const { skip, limit } = useSelector( getPagination );
+  const { tags } = useSelector( getFilter );
+
+  const params = new URLSearchParams();
+  tags.forEach( tag => {
+    params.append( 'tag', tag );
+  } );
+  params.set( 'skip', skip + limit );
+  const nextPage = params.toString();
+  const prev = skip - limit;
+  const allowPrev = ( prev > 0 );
+  if ( allowPrev ) {  
+    params.set( 'skip', Math.max( skip - limit, 0 ) );
+  }
+  else {
+    params.delete( 'skip' );
+  }
+  const prevPage = params.toString();
 
   return (
     <div className='pagination'>
-      <button className='previousPage' onClick={ () => dispatch( goToPreviousPage() ) } >Previous</button>
-      <button className='nextPage' onClick={ () => dispatch( goToNextPage() ) } >Next</button>
+      <Link className='previousPage' to={ `/?${ prevPage }` } >Previous</Link>
+      <Link className='nextPage' to={ `/?${ nextPage }` } >Next</Link>
     </div>
   );
 }

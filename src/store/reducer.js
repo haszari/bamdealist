@@ -4,7 +4,7 @@ import * as actions from './actions';
 
 const DEFAULT_STATE = {
   filter: {
-    tags: '',
+    tags: [],
     search: '',
   },
   pagination: {
@@ -28,7 +28,12 @@ const reducer = createReducer( DEFAULT_STATE, {
     state.items = action.payload;
   },
   [ actions.setPagination ]: ( state, action ) => {
-    state.pagination = action.payload;
+    state.pagination = { 
+      ...state.pagination,
+      ...action.payload,
+    };
+    state.pagination.limit = parseInt( state.pagination.limit );
+    state.pagination.skip = parseInt( state.pagination.skip );
   },
   [ actions.setFilterTags ]: ( state, action ) => {
     state.filter.tags = action.payload;
