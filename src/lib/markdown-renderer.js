@@ -1,38 +1,40 @@
 // utilities for rendering markdown to html, including generating hashtag links
 
-const marked = require('marked');
-const hashtag = require('hashtag');
-const _ = require('lodash');
+import marked from 'marked';
+import hashtag from 'hashtag';
 
-let defaultTagBaseUrl = '/find/tags/';
+import { tagUrl } from './route-url';
 
 // returns md with hashtags expanded to markdown links
-var expandHashtags = function(md, tagBaseUrl) {
-   var expandedMd = md;
+function expandHashtags( md ) {
+   let expandedMd = md;
 
-   let baseUrl = tagBaseUrl || defaultTagBaseUrl;
+   const hashtags = hashtag.parse(md);
+   const parserElements = hashtags.tokens;
 
-   var hashtags = hashtag.parse(md);
-   var parserElements = hashtags.tokens;
    parserElements.map(element => {
-      if (element.type === 'text') {
+      if ( element.type === 'text' ) {
          return element;
       }
-      element.text = `[${element.tag}](${baseUrl}${element.tag})`;
+      const url = tagUrl( element.tag );
+      element.text = `[${ element.tag }](${ url })`;
       return element;
    });
-   expandedMd = _.reduce(parserElements, (memo, element) => {
+
+   expandedMd = parserElements.reduce( ( memo, element ) => {
       return memo + element.text;
-   }, '');
+   }, '' );
 
    return expandedMd;
 };
 
-var markdownToHtml = function(md, tagBaseUrl) {
-   if (md) {
-      return marked(expandHashtags(md, tagBaseUrl));
+function markdownToHtml( md, tagBaseUrl ) {
+   if ( md ) {
+      return marked(
+         expandHashtags( md, tagBaseUrl )
+      );
    }
    return '';
 };
 
-module.exports = markdownToHtml;
+export default markdownToHtml;
