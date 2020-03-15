@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { getTags } from '../store/selectors';
 
+import { tagUrl } from '../lib/route-url';
+
 import Tag from './Tag';
 
 function tagFontSize( tagHitCount, maxHitCount ) {
@@ -12,13 +14,6 @@ function tagFontSize( tagHitCount, maxHitCount ) {
   size = size * sizeRange;
   return size + minSize;
 };
-
-function tagUrl( tag ) {
-  const params = new URLSearchParams();
-  params.set( 'tag', tag );
-  const url = params.toString();
-  return `/?${ url }`;
-}
 
 function TagCloud() {
   const tags = useSelector( getTags );

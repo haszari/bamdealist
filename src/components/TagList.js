@@ -1,8 +1,16 @@
 import React from 'react';
 
+import { tagUrl } from '../lib/route-url';
+
+import Tag from './Tag';
+
 function TagList( { tags } ) {
   const list = tags.map( ( tag ) => ( 
-    <div className='tag' key={ tag } >{ tag }</div> 
+    <Tag 
+      key={ tag }
+      label={ tag }
+      href={ tagUrl( tag ) }
+    /> 
   ) );
 
   return (
