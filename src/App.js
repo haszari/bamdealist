@@ -30,8 +30,8 @@ function ListView() {
   return (
     <div className='app'>
       <Pagination />
-      <Items />
       <TagCloud />
+      <Items />
     </div>
    );
 }

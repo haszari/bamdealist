@@ -1,7 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getTags } from '../store/selectors';
+import {
+  getFilter,
+  getTags,
+} from '../store/selectors';
 
 import { tagUrl } from '../lib/route-url';
 
@@ -16,28 +19,63 @@ function tagFontSize( tagHitCount, maxHitCount ) {
 };
 
 function TagCloud() {
+  const { tags: filterTags } = useSelector( getFilter );
   const tags = useSelector( getTags );
   if ( ! tags || ! tags.length ) {
     return null;
   }
 
-  const maxHitCount = tags[0].count;
+  let labelPrefix = '-'
 
-  const cloud = tags.map( ( tag ) => {
+  const currentTags = filterTags.map( tagText => {
+    const remainder = filterTags.filter( tag => {
+    return ( tag !== tagText );
+  } );
+    return ( 
+      <Tag 
+        key={ tagText }
+        label={ labelPrefix + tagText }
+        href={ 
+          tagUrl(
+            ...remainder
+          )
+        }
+      /> 
+    );
+  } );
+
+  labelPrefix = filterTags.length ? '+' : '';
+
+  const relatedTags = tags.filter( tag => {
+    return ! filterTags.includes( tag.tag );
+  } );
+  const maxHitCount = relatedTags[0].count;
+
+  const related = relatedTags.map( ( tag ) => {
     return ( 
       <Tag 
         key={ tag._id }
         fontSize={ tagFontSize( tag.count, maxHitCount ) }
-        label={ tag.tag }
-        href={ tagUrl( tag.tag ) }
+        label={ labelPrefix + tag.tag }
+        href={ 
+          tagUrl(
+            tag.tag,
+            ...filterTags
+          )
+        }
       /> 
     );
   } );
 
   return (
-     <div className='tags'>
-       { cloud }
-     </div>
+    <>
+      <div className='tags filter-tags'>
+        { currentTags }
+      </div>
+      <div className='tags related-tags'>
+        { related }
+      </div>
+    </>
   );
 }
 

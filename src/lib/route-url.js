@@ -1,7 +1,10 @@
 
-export function tagUrl( tag ) {
+
+export function tagUrl( ...tags ) {
   const params = new URLSearchParams();
-  params.set( 'tag', tag );
+  tags.forEach( tag => {
+    params.append( 'tag', tag );
+  } );
   const url = params.toString();
   return `/?${ url }`;
 }
