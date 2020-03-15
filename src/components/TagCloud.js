@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { getTags } from '../store/selectors';
+
+import Tag from './Tag';
 
 function tagFontSize( tagHitCount, maxHitCount ) {
   const minSize = 8, sizeRange = 30;
@@ -28,13 +29,13 @@ function TagCloud() {
   const maxHitCount = tags[0].count;
 
   const cloud = tags.map( ( tag ) => {
-    const styles = {
-      fontSize: tagFontSize( tag.count, maxHitCount ),
-    };
-    return (
-      <div className='tag' style={ styles } key={ tag._id } >
-        <Link to={ tagUrl( tag.tag ) }>{ tag.tag }</Link>
-      </div> 
+    return ( 
+      <Tag 
+        key={ tag._id }
+        fontSize={ tagFontSize( tag.count, maxHitCount ) }
+        label={ tag.tag }
+        href={ tagUrl( tag.tag ) }
+      /> 
     );
   } );
 
