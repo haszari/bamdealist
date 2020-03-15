@@ -17,7 +17,11 @@ function Items() {
   const articles = items.map( ( item ) => {
     return (
       <div className='article' key={ item._id } >
-        <Link to={ articleUrl( item._id ) }><h2 className='title'>{ item.title }</h2></Link>
+        <Link to={ articleUrl( item._id ) }>
+          <h2 className='title' dangerouslySetInnerHTML={{
+            __html: markdownRenderer( item.title, { linkHashtags: false } )
+          }} />
+        </Link>
         <div className='content'  dangerouslySetInnerHTML={{
           __html:  markdownRenderer( item.content )
         }} /> 
