@@ -8,3 +8,7 @@ export function tagUrl( ...tags ) {
   const url = params.toString();
   return `/?${ url }`;
 }
+
+export function articleUrl( id ) {
+  return `/item/${ id }`;
+}

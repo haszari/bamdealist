@@ -1,9 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { Link } from 'react-router-dom';
+
 import markdownRenderer from '../lib/markdown-renderer';
 
 import { getItems } from '../store/list/selectors';
+
+import { articleUrl } from '../lib/route-url';
 
 import TagList from './TagList';
 
@@ -13,9 +17,7 @@ function Items() {
   const articles = items.map( ( item ) => {
     return (
       <div className='article' key={ item._id } >
-        <h2 className='title' dangerouslySetInnerHTML={{
-          __html:  markdownRenderer( item.title )
-        }} />
+        <Link to={ articleUrl( item._id ) }><h2 className='title'>{ item.title }</h2></Link>
         <div className='content'  dangerouslySetInnerHTML={{
           __html:  markdownRenderer( item.content )
         }} /> 
