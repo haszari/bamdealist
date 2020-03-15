@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import markdownRenderer from '../lib/markdown-renderer';
 
-import { getItems } from '../store/selectors';
+import { getItems } from '../store/list/selectors';
 
 import TagList from './TagList';
 

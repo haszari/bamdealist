@@ -5,6 +5,10 @@ import { tagUrl } from '../lib/route-url';
 import Tag from './Tag';
 
 function TagList( { tags } ) {
+  if ( ! tags ) {
+    return null;
+  }
+
   const list = tags.map( ( tag ) => ( 
     <Tag 
       key={ tag }

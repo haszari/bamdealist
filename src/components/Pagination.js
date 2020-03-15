@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getPagination, getFilter } from '../store/selectors';
+import { getPagination, getFilter } from '../store/list/selectors';
 
 function Pagination() {
   const { skip, limit } = useSelector( getPagination );

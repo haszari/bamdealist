@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import {
   getFilter,
   getTags,
-} from '../store/selectors';
+} from '../store/list/selectors';
 
 import { tagUrl } from '../lib/route-url';
 

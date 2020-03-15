@@ -3,19 +3,18 @@ import { createAction } from '@reduxjs/toolkit';
 import {
   getPagination,
   getFilter,
-} from '../store/selectors';
+} from './selectors';
 
-import { formatMongoSearchQuery } from '../lib/mongo-query';
+import { formatMongoSearchQuery } from '../../lib/mongo-query';
+import { apiBase } from '../../lib/api';
 
-export const tagsReceived = createAction( 'transport/tagsReceived' );
+export const tagsReceived = createAction( 'list/tagsReceived' );
 
-export const itemsReceived = createAction( 'transport/itemsReceived' );
+export const itemsReceived = createAction( 'list/itemsReceived' );
 
-export const setPagination = createAction( 'transport/setPagination' );
+export const setPagination = createAction( 'list/setPagination' );
 
-export const setFilterTags = createAction( 'transport/setFilterTags' );
-
-const apiBase = 'http://localhost:8947/api/v1/';
+export const setFilterTags = createAction( 'list/setFilterTags' );
 
 const fetchTags = async ( { tags = [] } ) => {
   const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags ) );
