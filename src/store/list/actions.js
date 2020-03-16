@@ -16,14 +16,16 @@ export const setPagination = createAction( 'list/setPagination' );
 
 export const setFilterTags = createAction( 'list/setFilterTags' );
 
-const fetchTags = async ( { tags = [] } ) => {
-  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags ) );
+export const setFilterSearch = createAction( 'list/setFilterSearch' );
+
+const fetchTags = async ( { tags = [], search = '' } ) => {
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags, search ) );
   const response = await fetch( `${ apiBase }tags?query=${ mongoQuery }` );
   return response.json();
 }
 
-const fetchItems = async ( { limit = 1, skip = 0, tags = [] } ) => {
-  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags ) );
+const fetchItems = async ( { limit = 1, skip = 0, tags = [], search = '' } ) => {
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags, search ) );
   const response = await fetch( `${ apiBase }Item/?limit=${ limit }&skip=${ skip }&sort={"originated":-1}&query=${ mongoQuery }` );
   return response.json();
 }

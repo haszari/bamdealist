@@ -38,6 +38,9 @@ const reducer = createReducer( DEFAULT_STATE, {
   [ actions.setFilterTags ]: ( state, action ) => {
     state.filter.tags = action.payload;
   },
+  [ actions.setFilterSearch ]: ( state, action ) => {
+    state.filter.search = action.payload;
+  },
 } );
 
 export default reducer;

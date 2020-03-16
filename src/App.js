@@ -14,6 +14,7 @@ import listStore from './store/list/store';
 import {
   setPagination,
   setFilterTags,
+  setFilterSearch,
   hydrateItems,
   hydrateTags,
 } from './store/list/actions';
@@ -68,13 +69,15 @@ function HydratedListView() {
   const queryParams = useQuery();
   const tags = queryParams.getAll( 'tag' );
   const skip = queryParams.get( 'skip' ) || 0;
+  const search = queryParams.get( 'search' ) || '';
 
   useEffect( () => {
     listStore.dispatch( setPagination( { skip } ) );
+    listStore.dispatch( setFilterSearch( search ) );
     listStore.dispatch( setFilterTags( tags ) );
     listStore.dispatch( hydrateItems() );
     listStore.dispatch( hydrateTags() );
-  }, [ skip, tags ] );
+  }, [ skip, tags, search ] );
 
   return ( <ListView /> );
 }
@@ -89,7 +92,7 @@ function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/?tag=musiclistening">musiclistening</Link>
+              <Link to="/?search=midi">search midi</Link>
             </li>
             <li>
               <Link to="/?tag=musiclistening&tag=hiphop">musiclistening+hiphop</Link>
