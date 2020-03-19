@@ -3,7 +3,7 @@
 import marked from 'marked';
 import hashtag from 'hashtag';
 
-import { tagUrl } from './route-url';
+import { listUrl } from './route-url';
 
 // Processes hashtags, either removing the hash 
 // (so they are more readable in flowing text) 
@@ -18,7 +18,7 @@ function processHashtags( md, asLinks = true ) {
       if ( element.type === 'text' ) {
          return element;
       }
-      const url = tagUrl( element.tag );
+      const url = listUrl( { tags: [ element.tag ] } );
       element.text = element.tag;
       if ( asLinks ) {
          element.text = `[${ element.tag }](${ url })`;

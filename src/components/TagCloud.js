@@ -6,7 +6,7 @@ import {
   getTags,
 } from '../store/list/selectors';
 
-import { tagUrl } from '../lib/route-url';
+import { listUrl } from '../lib/route-url';
 
 import Tag from './Tag';
 
@@ -19,7 +19,7 @@ function tagFontSize( tagHitCount, maxHitCount ) {
 };
 
 function TagCloud() {
-  const { tags: filterTags } = useSelector( getFilter );
+  const { tags: filterTags, search } = useSelector( getFilter );
   const tags = useSelector( getTags );
   if ( ! tags || ! tags.length ) {
     return null;
@@ -36,9 +36,10 @@ function TagCloud() {
         key={ tagText }
         label={ labelPrefix + tagText }
         href={ 
-          tagUrl(
-            ...remainder
-          )
+          listUrl( {
+            tags: remainder, 
+            search
+          } )
         }
       /> 
     );
@@ -58,10 +59,13 @@ function TagCloud() {
         fontSize={ tagFontSize( tag.count, maxHitCount ) }
         label={ labelPrefix + tag.tag }
         href={ 
-          tagUrl(
-            tag.tag,
-            ...filterTags
-          )
+          listUrl( {
+            tags: [ 
+              tag.tag,
+              ...filterTags
+            ],
+            search
+          } )
         }
       /> 
     );

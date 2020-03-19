@@ -29,6 +29,8 @@ import Pagination from './components/Pagination';
 import TagCloud from './components/TagCloud';
 import Items from './components/Items';
 import Item from './components/Item';
+import Search from './components/Search';
+
 import './App.css';
 
 function useQuery() {
@@ -107,6 +109,7 @@ function App() {
             } />
             <Route path="/" children={ 
               <Provider store={ listStore }>
+                <Search />
                 <HydratedListView />
               </Provider>
             } />

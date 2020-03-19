@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { tagUrl } from '../lib/route-url';
+import { listUrl } from '../lib/route-url';
 
 import Tag from './Tag';
 
@@ -13,7 +13,7 @@ function TagList( { tags } ) {
     <Tag 
       key={ tag }
       label={ tag }
-      href={ tagUrl( tag ) }
+      href={ listUrl( { tags: [ tag ] } ) }
     /> 
   ) );
 
