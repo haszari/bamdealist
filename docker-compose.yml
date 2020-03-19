@@ -7,6 +7,8 @@ services:
       restart: always
       volumes:
          - ./bamdealist-backup:/usr/src/backup
+         - mongodb:/data/db
+         - mongodb_config:/data/configdb
 
    web:
       image: 'node:latest' 
@@ -32,3 +34,8 @@ services:
       volumes:
          - ./:/usr/src/app
          - ./bamdealist-backup:/usr/src/backup
+
+# persistent volume for mongo data so we don't lose content on restart
+volumes:
+  mongodb:
+  mongodb_config:
