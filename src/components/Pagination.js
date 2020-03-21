@@ -29,8 +29,8 @@ function Pagination() {
 
   return (
     <div className='pagination'>
-      <Link className='previousPage' to={ `/?${ prevPage }` } ><ArrowBackIcon /></Link>
-      <Link className='nextPage' to={ `/?${ nextPage }` } ><ArrowForwardIcon /></Link>
+      <Link className='previousPage' to={ `/?${ prevPage }` } ><ArrowBackIcon className='icon' /></Link>
+      <Link className='nextPage' to={ `/?${ nextPage }` } ><ArrowForwardIcon className='icon' /></Link>
     </div>
   );
 }

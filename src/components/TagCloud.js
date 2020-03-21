@@ -72,14 +72,14 @@ function TagCloud() {
   } );
 
   return (
-    <>
-      <div className='tags filter-tags'>
+    <div className='tags'>
+      <div className='filter-tags'>
         { currentTags }
       </div>
-      <div className='tags related-tags'>
+      <div className='related-tags'>
         { related }
       </div>
-    </>
+    </div>
   );
 }
 

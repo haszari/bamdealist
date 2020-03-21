@@ -99,16 +99,45 @@ input[type=search] {
 }
 
 .app {
-  margin: $margin;
 }
 
 .pagination {
   display: flex;
   justify-content: space-between;
+  padding: 1em $margin;
+  background: $header-bg;
+
+  .icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.article {
+  padding: 1em $margin;
+}
+
+.article:nth-child(even) {
+  background-color: $colour-c;
+}
+
+.article:nth-child(odd) {
+  background-color: $colour-b;
+}
+
+.article {
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0.5em 0 1em;
+  }
 }
 
 .tags {
   text-align: center;
+  padding: 1em;
+}
+
+.app > .tags {
+  padding: $margin;
 }
 
 .tag {
