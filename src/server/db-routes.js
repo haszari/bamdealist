@@ -60,22 +60,7 @@ db.once('open', function() {
    });
 
    // randomly pick an item, optionally filtered by tag/text search
-   router.get(API_PATH + '/lucky', function(request, response) {
-      var matchQuery = {};
-      if (request.query.query) {
-         matchQuery = JSON.parse(request.query.query);
-      }
-      ItemModel.find(matchQuery,
-         function(err, result) {
-            var winner = _.sample(result);
-            if (err) return console.log(err);
-            response.send(winner);
-         }
-      );
-   });
-
-   // randomly pick an item, optionally filtered by tag/text search
-   router.get( API_PATH + '/sample', function( request, response ) {
+   router.get( API_PATH + '/lucky', function( request, response ) {
       let matchQuery = {}, limit = 1;
       if ( request.query.query ) {
          matchQuery = JSON.parse( request.query.query );
