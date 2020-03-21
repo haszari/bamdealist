@@ -19,7 +19,7 @@ function Search() {
       } );
       history.push( url );
     } }>
-      <input type="search" ref={ searchInput } value={ filter.text }/>
+      <input type="search" placeholder='search' ref={ searchInput } value={ filter.text }/>
     </form>
   );
 }

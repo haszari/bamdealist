@@ -3,14 +3,21 @@ import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
 
 const DEFAULT_STATE = {
+  // filter settings
   filter: {
     tags: [],
     search: '',
   },
+  // sort or shuffle, could have other list modes
+  sort: 'sort',
+  // UI state for shuffle settings
+  shuffle: {
+    limit: 1,
+  },
+  // UI state for pagination settings
   pagination: {
     limit: 12,
     skip: 0,
-    shuffle: false,
   },
   items: [
     // title & content are markdown
@@ -27,6 +34,18 @@ const reducer = createReducer( DEFAULT_STATE, {
   },
   [ actions.itemsReceived ]: ( state, action ) => {
     state.items = action.payload;
+  },
+  [ actions.setSort ]: ( state, action ) => {
+    const newMode = action.payload.toLowerCase();
+    if ( [ 'sort', 'shuffle' ].includes( newMode ) ) {
+      state.sort = newMode;
+    }
+  },
+  [ actions.setShuffle ]: ( state, action ) => {
+    const shuffleCount = parseInt( action.payload.limit );
+    if ( shuffleCount ) {
+      state.shuffle.limit = shuffleCount;
+    }
   },
   [ actions.setPagination ]: ( state, action ) => {
     state.pagination = { 

@@ -3,6 +3,8 @@ import { createAction } from '@reduxjs/toolkit';
 import {
   getPagination,
   getFilter,
+  getSort,
+  getShuffle,
 } from './selectors';
 
 import { formatMongoSearchQuery } from '../../lib/mongo-query';
@@ -11,6 +13,10 @@ import { apiBase } from '../../lib/api';
 export const tagsReceived = createAction( 'list/tagsReceived' );
 
 export const itemsReceived = createAction( 'list/itemsReceived' );
+
+export const setSort = createAction( 'list/setSort' );
+
+export const setShuffle = createAction( 'list/setShuffle' );
 
 export const setPagination = createAction( 'list/setPagination' );
 
@@ -30,6 +36,12 @@ const fetchItems = async ( { limit = 1, skip = 0, tags = [], search = '' } ) => 
   return response.json();
 }
 
+const fetchShuffledItems = async ( { limit = 1, skip = 0, tags = [], search = '' } ) => {
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags, search ) );
+  const response = await fetch( `${ apiBase }lucky/?limit=${ limit }&skip=${ skip }&sort={"originated":-1}&query=${ mongoQuery }` );
+  return response.json();
+}
+
 export const hydrateTags = () => async ( dispatch, state ) => {
   const current = state();
   const filter = getFilter( current );
@@ -39,10 +51,20 @@ export const hydrateTags = () => async ( dispatch, state ) => {
 
 export const hydrateItems = () => async ( dispatch, state ) => {
   const current = state();
-  const response = await fetchItems( {
-    ...getFilter( current ),
-    ...getPagination( current ),
-   } );
+  const mode = getSort( current );
+  let response;
+  if ( mode === 'shuffle' ) {
+    response = await fetchShuffledItems( {
+      ...getFilter( current ),
+      ...getShuffle( current ),
+     } );
+  }
+  else {  
+    response = await fetchItems( {
+      ...getFilter( current ),
+      ...getPagination( current ),
+     } );
+  }
   dispatch( itemsReceived( response ) );
 }
 

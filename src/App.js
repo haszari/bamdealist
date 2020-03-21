@@ -5,7 +5,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   useLocation,
   useParams,
 } from 'react-router-dom';
@@ -14,6 +13,8 @@ import {
   setPagination,
   setFilterTags,
   setFilterSearch,
+  setSort,
+  setShuffle,
   hydrateItems,
   hydrateTags,
 } from './store/list/actions';
@@ -29,7 +30,7 @@ import Pagination from './components/Pagination';
 import TagCloud from './components/TagCloud';
 import Items from './components/Items';
 import Item from './components/Item';
-import Search from './components/Search';
+import Navigation from './components/Navigation';
 
 import './App.css';
 
@@ -67,21 +68,42 @@ function ListView() {
    );
 }
 
+function HydratedShuffleView() {
+  const queryParams = useQuery();
+  const tags = queryParams.getAll( 'tag' );
+  const limit = queryParams.get( 'limit' ) || 1;
+  const search = queryParams.get( 'search' ) || '';
+
+console.log( 'yep', limit );
+
+  useEffect( () => {
+    store.dispatch( setShuffle( { limit } ) );
+    store.dispatch( setFilterSearch( search ) );
+    store.dispatch( setFilterTags( tags ) );
+    store.dispatch( setSort( 'shuffle' ) );
+    store.dispatch( hydrateItems() );
+    // clear tags??
+    // store.dispatch( hydrateTags() );
+  }, [ limit, tags, search ] );
+
+  return ( <ListView /> );
+}
+
 function HydratedListView() {
   const queryParams = useQuery();
   const tags = queryParams.getAll( 'tag' );
   const skip = queryParams.get( 'skip' ) || 0;
   const limit = queryParams.get( 'limit' ) || 12;
-  const shuffle = queryParams.get( 'shuffle' ) || false;
   const search = queryParams.get( 'search' ) || '';
 
   useEffect( () => {
-    store.dispatch( setPagination( { skip, limit, shuffle } ) );
+    store.dispatch( setPagination( { skip, limit } ) );
     store.dispatch( setFilterSearch( search ) );
     store.dispatch( setFilterTags( tags ) );
+    store.dispatch( setSort( 'sort' ) );
     store.dispatch( hydrateItems() );
     store.dispatch( hydrateTags() );
-  }, [ skip, limit, shuffle, tags, search ] );
+  }, [ skip, limit, tags, search ] );
 
   return ( <ListView /> );
 }
@@ -91,25 +113,19 @@ function App() {
   return (
       <Router>
         <Provider store={ store }>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/?search=midi">search midi</Link>
-            </li>
-            <li>
-              <Link to="/?tag=musiclistening&tag=hiphop">musiclistening+hiphop</Link>
-            </li>
-          </ul>
+          <Navigation />
 
           <Switch>
             <Route path="/item/:id" children={ 
                 <HydratedArticleView />
             } />
+            <Route path="/lucky" children={ 
+                <>
+                  <HydratedShuffleView />
+                </>
+            } />
             <Route path="/" children={ 
                 <>
-                  <Search />
                   <HydratedListView />
                 </>
             } />

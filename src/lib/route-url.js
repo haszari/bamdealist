@@ -1,5 +1,5 @@
 
-export function listUrl( { tags, search } ) {
+export function listUrl( { tags, search, shuffle } ) {
   const params = new URLSearchParams();
   tags.forEach( tag => {
     params.append( 'tag', tag );
@@ -7,8 +7,11 @@ export function listUrl( { tags, search } ) {
   if ( search ) {
     params.set( 'search', search );
   }
-  const url = params.toString();
-  return `/?${ url }`;
+  if ( shuffle ) {
+    params.set( 'limit', shuffle );
+    return `/lucky/?${ params.toString() }`;
+  }
+  return `/?${ params.toString() }`;
 }
 
 export function articleUrl( id ) {
