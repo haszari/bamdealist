@@ -2,6 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+
 import { getPagination, getFilter } from '../store/list/selectors';
 
 function Pagination() {
@@ -26,8 +29,8 @@ function Pagination() {
 
   return (
     <div className='pagination'>
-      <Link className='previousPage' to={ `/?${ prevPage }` } >Previous</Link>
-      <Link className='nextPage' to={ `/?${ nextPage }` } >Next</Link>
+      <Link className='previousPage' to={ `/?${ prevPage }` } ><ArrowBackIcon /></Link>
+      <Link className='nextPage' to={ `/?${ nextPage }` } ><ArrowForwardIcon /></Link>
     </div>
   );
 }

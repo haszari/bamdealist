@@ -102,6 +102,11 @@ input[type=search] {
   margin: $margin;
 }
 
+.pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
 .tags {
   text-align: center;
 }

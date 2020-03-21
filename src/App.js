@@ -63,8 +63,8 @@ function HydratedArticleView() {
 function ListView() {
   return (
     <div className='app'>
-      <Pagination />
       <Items />
+      <Pagination />
       <TagCloud />
     </div>
    );
