@@ -10,6 +10,7 @@ const DEFAULT_STATE = {
   pagination: {
     limit: 12,
     skip: 0,
+    shuffle: false,
   },
   items: [
     // title & content are markdown

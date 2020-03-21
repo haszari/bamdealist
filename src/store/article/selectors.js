@@ -1,4 +1,4 @@
 
-export const getId = state => state.id;
+export const getId = state => state.article.id;
 
-export const getArticle = state => state.article;
+export const getArticle = state => state.article.article;

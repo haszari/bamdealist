@@ -10,7 +10,6 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import listStore from './store/list/store';
 import {
   setPagination,
   setFilterTags,
@@ -19,11 +18,12 @@ import {
   hydrateTags,
 } from './store/list/actions';
 
-import articleStore from './store/article/store';
 import {
   setId,
   hydrateArticle,
 } from './store/article/actions';
+
+import store from './store';
 
 import Pagination from './components/Pagination';
 import TagCloud from './components/TagCloud';
@@ -49,8 +49,8 @@ function HydratedArticleView() {
   let { id } = useParams();
 
   useEffect( () => {
-    articleStore.dispatch( setId( id ) );
-    articleStore.dispatch( hydrateArticle() );
+    store.dispatch( setId( id ) );
+    store.dispatch( hydrateArticle() );
   }, [ id ] );
 
   return ( <ArticleView /> );
@@ -71,15 +71,17 @@ function HydratedListView() {
   const queryParams = useQuery();
   const tags = queryParams.getAll( 'tag' );
   const skip = queryParams.get( 'skip' ) || 0;
+  const limit = queryParams.get( 'limit' ) || 12;
+  const shuffle = queryParams.get( 'shuffle' ) || false;
   const search = queryParams.get( 'search' ) || '';
 
   useEffect( () => {
-    listStore.dispatch( setPagination( { skip } ) );
-    listStore.dispatch( setFilterSearch( search ) );
-    listStore.dispatch( setFilterTags( tags ) );
-    listStore.dispatch( hydrateItems() );
-    listStore.dispatch( hydrateTags() );
-  }, [ skip, tags, search ] );
+    store.dispatch( setPagination( { skip, limit, shuffle } ) );
+    store.dispatch( setFilterSearch( search ) );
+    store.dispatch( setFilterTags( tags ) );
+    store.dispatch( hydrateItems() );
+    store.dispatch( hydrateTags() );
+  }, [ skip, limit, shuffle, tags, search ] );
 
   return ( <ListView /> );
 }
@@ -88,7 +90,7 @@ function App() {
 
   return (
       <Router>
-        <div>
+        <Provider store={ store }>
           <ul>
             <li>
               <Link to="/">Home</Link>
@@ -103,18 +105,16 @@ function App() {
 
           <Switch>
             <Route path="/item/:id" children={ 
-              <Provider store={ articleStore }>
                 <HydratedArticleView />
-              </Provider>
             } />
             <Route path="/" children={ 
-              <Provider store={ listStore }>
-                <Search />
-                <HydratedListView />
-              </Provider>
+                <>
+                  <Search />
+                  <HydratedListView />
+                </>
             } />
           </Switch>
-        </div>
+        </Provider>
       </Router>
   );
 }
