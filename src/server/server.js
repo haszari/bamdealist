@@ -124,14 +124,6 @@ app.use(
    express.static( path.join( path.resolve(), './build/' ) )
 );
 
-app.use(function(req, res, next) {
-  // should limit this to create react app port? 
-  // actually just allow * in development mode
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000/");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
 // default hello world middleware (which will never get hit)
 app.get('/', 
   (req, res) => res.send('Last ditch hello world .. our client app is not getting served?')
