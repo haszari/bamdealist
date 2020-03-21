@@ -73,6 +73,25 @@ db.once('open', function() {
          }
       );
    });
+
+   // randomly pick an item, optionally filtered by tag/text search
+   router.get( API_PATH + '/sample', function( request, response ) {
+      let matchQuery = {}, limit = 1;
+      if ( request.query.query ) {
+         matchQuery = JSON.parse( request.query.query );
+      }
+      if ( request.query.limit ) {
+         limit = parseInt( request.query.limit );
+      }
+      ItemModel.aggregate( [
+         { $match: matchQuery },
+         { $sample: { size: limit } }, 
+      ] ).exec( function( err, result ) {
+         if ( err ) return console.log( err );
+         response.send( result );
+      } );
+   } );
+
 });
 
 export default router;
