@@ -24,6 +24,14 @@ input[type=search] {
   padding: 1em $margin;
   background: $header-bg;
 
+  > * {
+    display: inline-flex;
+  }
+
+  > form {
+    display: flex;
+  }
+
   a {
     min-width: 60px;
   }
@@ -33,6 +41,24 @@ input[type=search] {
     width: $header-icon-size;
   }
 
+  input {
+    font-size: 26px;
+    height: 42px;
+    border-style: none;
+    position: relative;
+    top: 4px;
+  }
+
+  input, button {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .home, .shuffle {
+    width: 100px;
+  }
+
   .search {
     position: relative;
 
@@ -40,26 +66,32 @@ input[type=search] {
       position: absolute;
       right: 6px;
       width: 32px;
-      bottom: 2px;
       z-index: 1;
       color: #555;
     }
 
     input {
       width: 200px;
-      height: 44px;
       border-radius: 44px;
-      border-style: none;
-      position: relative;
-      top: 6px;
-      font-size: 26px;
       padding: 0 16px;
       text-align: center;
       color: lighten( $text, 20% );
+    }
+  }
 
-      &:focus {
-        outline: none;
-      }
+  .shuffle {
+    position: relative;
+    
+    input {
+      width: 60px;
+      background: transparent;
+      text-align: right;
+    }
+
+    button {
+      border: none;
+      background: none;
+      padding: 0;
     }
   }
 }

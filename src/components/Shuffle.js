@@ -26,7 +26,7 @@ function Shuffle() {
   const setShuffleLimit = ( limit ) => store.dispatch( setShuffle( { limit } ) );
 
   return (
-    <form onSubmit={ ( e ) => {
+    <form className='shuffle' onSubmit={ ( e ) => {
       e.preventDefault();
       const url = listUrl( { 
         ...filter,
@@ -34,12 +34,12 @@ function Shuffle() {
       } );
       history.push( url );
     } }>
-      <CasinoIcon className='icon' />
       <input 
         type="number"
         ref={ numberInput }
         onChange={ e => setShuffleLimit( e.currentTarget.value ) }
         value={ limit } />
+      <button type='submit'><CasinoIcon className='icon' /></button>
     </form>
   );
 }

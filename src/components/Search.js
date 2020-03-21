@@ -22,7 +22,7 @@ function Search() {
       history.push( url );
     } }>
       <SearchIcon className='icon' /> 
-      <input ref={ searchInput } value={ filter.text } />
+      <input ref={ searchInput } defaultValue={ filter.search } />
     </form>
   );
 }
