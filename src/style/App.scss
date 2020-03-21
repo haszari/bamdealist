@@ -6,6 +6,11 @@ $header-icon-size: 50px;
 body {
   background-color: $background;
   color: $text;
+  overflow-wrap: break-word;
+}
+
+pre {
+  white-space: pre-wrap;
 }
 
 a, a:visited {
