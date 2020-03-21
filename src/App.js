@@ -17,6 +17,8 @@ import {
   setShuffle,
   hydrateItems,
   hydrateTags,
+  tagsReceived,
+  itemsReceived,
 } from './store/list/actions';
 
 import {
@@ -62,8 +64,8 @@ function ListView() {
   return (
     <div className='app'>
       <Pagination />
-      <TagCloud />
       <Items />
+      <TagCloud />
     </div>
    );
 }
@@ -77,6 +79,10 @@ function HydratedShuffleView() {
 console.log( 'yep', limit );
 
   useEffect( () => {
+    // clear UI
+    store.dispatch( tagsReceived( [] ) );
+    store.dispatch( itemsReceived( [] ) );
+
     store.dispatch( setShuffle( { limit } ) );
     store.dispatch( setFilterSearch( search ) );
     store.dispatch( setFilterTags( tags ) );
@@ -97,6 +103,10 @@ function HydratedListView() {
   const search = queryParams.get( 'search' ) || '';
 
   useEffect( () => {
+    // clear UI
+    store.dispatch( tagsReceived( [] ) );
+    store.dispatch( itemsReceived( [] ) );
+
     store.dispatch( setPagination( { skip, limit } ) );
     store.dispatch( setFilterSearch( search ) );
     store.dispatch( setFilterTags( tags ) );
