@@ -34,7 +34,7 @@ import Items from './components/Items';
 import Item from './components/Item';
 import Navigation from './components/Navigation';
 
-import './App.css';
+import './style/App.scss';
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
@@ -75,8 +75,6 @@ function HydratedShuffleView() {
   const tags = queryParams.getAll( 'tag' );
   const limit = queryParams.get( 'limit' ) || 1;
   const search = queryParams.get( 'search' ) || '';
-
-console.log( 'yep', limit );
 
   useEffect( () => {
     // clear UI

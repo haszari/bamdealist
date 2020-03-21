@@ -1,3 +1,15 @@
+@import './Colours.scss';
+
+body {
+  background-color: $background;
+  color: $text;
+}
+
+a, a:visited {
+  color: $link;
+  text-decoration: none;
+}
+
 .app {
   margin: 2em;
 }
