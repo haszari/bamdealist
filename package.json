@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "connect-history-api-fallback": "^1.6.0",
     "express": "^4.17.1",
     "express-restify-mongoose": "^6.0.0",
     "hashtag": "0.0.1",

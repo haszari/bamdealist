@@ -1,6 +1,9 @@
-// const express = require('express');
+import path from 'path';
 import express from 'express';
+import historyApiFallback from 'connect-history-api-fallback';
+
 import dbRouter from './db-routes.js';
+
 
 const app = express();
 
@@ -26,11 +29,9 @@ app.use(function(req, res, next) {
 
 
 /*
-const path = require('path');
 const { URL } = require('url');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const historyApiFallback = require('connect-history-api-fallback');
 var session = require("express-session");
 var passport = require('passport');
 // var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -107,7 +108,6 @@ if (dbRouter) {
    }
    */
 }
-/*
 // reroute whatever client urls through to (webpack) index.html so we can have client-side routing
 // order seems to matter - this stopped working when I moved it after the `/` route (below)
 app.use(historyApiFallback({
@@ -115,14 +115,14 @@ app.use(historyApiFallback({
    // verbose: DEVELOPMENT
 }));
 
-// serve up our html file
-// todo just serve the file, not the folder?
-app.use('/', 
+// Serve up production build of react client webapp on /.
+// For development, run web app in host OS with npm start
+// and access at localhost:3000 (i.e. Create React App defaults).
+app.use(
+  '/', 
    // ensureAuthenticated,
-   express.static(path.join(__dirname, '../../src/www/public/'))
+   express.static( path.join( path.resolve(), './build/' ) )
 );
-
-*/
 
 app.use(function(req, res, next) {
   // should limit this to create react app port? 
