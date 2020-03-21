@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import CasinoIcon from '@material-ui/icons/Casino';
+
 import { listUrl } from '../lib/route-url';
 
 import { setShuffle } from '../store/list/actions';
@@ -32,6 +34,7 @@ function Shuffle() {
       } );
       history.push( url );
     } }>
+      <CasinoIcon className='icon' />
       <input 
         type="number"
         ref={ numberInput }

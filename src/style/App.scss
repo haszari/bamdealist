@@ -1,5 +1,8 @@
 @import './Colours.scss';
 
+$margin: 2em;
+$header-icon-size: 50px;
+
 body {
   background-color: $background;
   color: $text;
@@ -10,8 +13,59 @@ a, a:visited {
   text-decoration: none;
 }
 
+// reset search input
+input[type=search] {
+  -webkit-appearance: textfield;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em $margin;
+  background: $header-bg;
+
+  a {
+    min-width: 60px;
+  }
+
+  .icon {
+    height: $header-icon-size;
+    width: $header-icon-size;
+  }
+
+  .search {
+    position: relative;
+
+    .icon {
+      position: absolute;
+      right: 6px;
+      width: 32px;
+      bottom: 2px;
+      z-index: 1;
+      color: #555;
+    }
+
+    input {
+      width: 200px;
+      height: 44px;
+      border-radius: 44px;
+      border-style: none;
+      position: relative;
+      top: 6px;
+      font-size: 26px;
+      padding: 0 16px;
+      text-align: center;
+      color: lighten( $text, 20% );
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
 .app {
-  margin: 2em;
+  margin: $margin;
 }
 
 .tags {
