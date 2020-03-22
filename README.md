@@ -1,44 +1,71 @@
-# bamdealist
+# BAMdealist
 ## Markdown-based task, idea and miscellaneous snippet manager.
 
-### dependencies
-Docker.
+### How to run it
+#### Build & run production
+- `cp example.env .env` and set host, ports etc
+- `npm run build`
+- `docker-compose up -d`
 
-The app depends on [nodejs + npm](https://nodejs.org) and [mongodb](https://www.mongodb.com); these are handled by `docker-compose`.
+App & API is served on host/port configured in env, e.g. http://localhost:8947
 
-### developer start
-Set up required environment variables (`cp sample.env .env` to use the defaults).
+#### Build & run development
+- `cp example.env .env` and set host, ports etc
+- `npm start`
+- `docker-compose up -d`
 
-`docker-compose up --build`
+Client app is served using [create-react-app](https://create-react-app.dev), e.g. http://localhost:3000
 
-You'll see a `webpack-dev-server` process running, which will pick up client (`src/www`) code/style changes. You'll need to relaunch if you make server changes. `babel-node` is used so we can use ES6 in server code.
+API is served on host/port configured in env, e.g. http://localhost:8947
 
-### production start
-Set up required environment variables (see `sample.env`).
-
-`docker-compose -f ./docker-compose.yml up --build -d`
-
-This builds to `/dist` and serves that.
-
-It takes a minute or two to come up (peek at `docker-compose logs bamdealist` to see where it's up to).
-
-### stop
-`docker-compose down`
-
-### backup/restore & import
+### How to get content in & out
 The `bamdealist-backup` folder is mounted as `/usr/src/backup` in the `mongo` container, so we can use that for import, export and backup.
 
-Make sure you use the right database name (`-d`) if you've customised it for some reason.
+#### Backup
+- `docker-compose exec mongo mongoexport -d bamdealist -c items -o "/usr/src/backup/backups/$(date '+%Y%m%d-%H-%M-%S')-bamdealist.json"`
 
-#### backup 
-`docker-compose exec mongo mongoexport -d bamdealist -c items -o "/usr/src/backup/$(date '+%Y%m%d-%H-%M-%S')-bamdealist.json"`
+This is a mongo dump of the database.
 
-Do this regularly and look after the json files – if you lose your container state, the data is gone!
+### Restore
+- `docker-compose exec mongo mongoimport -d bamdealist -c items "/usr/src/backup/backups/${BACKUP_FILE}"`
 
-#### restore
-`docker-compose exec mongo mongoimport -d bamdealist -c items "/usr/src/backup/tmp~~/${BACKUP_FILE}"`
+### Import 
+- `docker-compose exec bamdealist npm run import -- -f  /usr/src/backup/tmp~~/${IMPORT_FILE}`
 
-#### import
-1. Put the content you want to import into a file in `bamdealist-backup/tmp~~`, e.g. `import.md`.
-2. Import using node script `docker-compose exec bamdealist npm run import -- -f  /usr/src/backup/tmp~~/import.md`.
-3. Do a backup (see above)!
+Import from a [markdown](https://github.github.com/gfm/) file. 
+
+- #hashtags are indexed
+- __Bold_ is indexed
+- _Italics_ is indexed 
+- Words in titles < H4 are indexed and apply to all items (until another heading of same level). You can use this to set common tags in H1 at the start of the file, or use H3 for dates or topics.
+- H2 is reserved for two different kinds of import:
+  - `## history` 
+    - The file is broken up into sections delimited by H4 (`####`), each of which is imported as a single item.
+  - `## tasks`
+    - Each top-level bullet point is imported as a single item.
+
+Example file:
+
+```md
+# #diary #notes
+
+## tasks
+- get flour
+- go for a run
+
+## history
+
+### 20200321
+#### Free as in ?
+<!-- #opensource #ideas #philosophy -->
+##### Beer
+As in you get a product or service to use without having to pay or contribute.
+
+##### Speech
+An idea or expression or product is released into the #community to flourish, and will not do so without contribution from others.
+
+#### Went for a short #walk
+<!-- #activity -->
+And saw the #flowers growing in the #park.
+```
+
