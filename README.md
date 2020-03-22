@@ -3,6 +3,7 @@
 
 ### How to run it
 #### Build & run production
+- `npm install`
 - `cp example.env .env` and set host, ports etc
 - `npm run build`
 - `docker-compose up -d`
@@ -10,6 +11,7 @@
 App & API is served on host/port configured in env, e.g. http://localhost:8947
 
 #### Build & run development
+- `npm install`
 - `cp example.env .env` and set host, ports etc
 - `npm start`
 - `docker-compose up -d`
