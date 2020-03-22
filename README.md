@@ -35,7 +35,7 @@ This is a mongo dump of the database.
 Import from a [markdown](https://github.github.com/gfm/) file. 
 
 - #hashtags are indexed
-- __Bold_ is indexed
+- __Bold__ is indexed
 - _Italics_ is indexed 
 - Words in titles < H4 are indexed and apply to all items (until another heading of same level). You can use this to set common tags in H1 at the start of the file, or use H3 for dates or topics.
 - H2 is reserved for two different kinds of import:
