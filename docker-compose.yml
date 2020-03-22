@@ -7,10 +7,15 @@ services:
       restart: always
       volumes:
          - ./bamdealist-backup:/usr/src/backup
+         - mongodb:/data/db
+         - mongodb_config:/data/configdb
 
-   bamdealist: 
-      build: ./bamdealist-server
-      restart: always
+   web:
+      image: 'node:latest' 
+      # build: ./docker
+      # restart: always
+      working_dir: /usr/src/app
+      command: node src/server/server
       depends_on: 
          - 'mongo'
       environment: 
@@ -27,5 +32,10 @@ services:
       ports: 
          - '${EXTERNAL_BIND_PORT}:${INTERNAL_APP_PORT}' # note that we are doing localhost only here via port expose - will only want that for dev
       volumes:
-         - ./bamdealist-server:/usr/src/app
+         - ./:/usr/src/app
          - ./bamdealist-backup:/usr/src/backup
+
+# persistent volume for mongo data so we don't lose content on restart
+volumes:
+  mongodb:
+  mongodb_config:

@@ -1,0 +1,164 @@
+@import './Colours.scss';
+
+$margin: 2em;
+$header-icon-size: 50px;
+
+body {
+  background-color: $background;
+  color: $text;
+  overflow-wrap: break-word;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+a, a:visited {
+  color: $link;
+  text-decoration: none;
+}
+
+// reset search input
+input[type=search] {
+  -webkit-appearance: textfield;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em $margin;
+  background: $header-bg;
+
+  > * {
+    display: inline-flex;
+  }
+
+  > form {
+    display: flex;
+  }
+
+  a {
+    min-width: 60px;
+  }
+
+  .icon {
+    height: $header-icon-size;
+    width: $header-icon-size;
+  }
+
+  input {
+    font-size: 26px;
+    height: 42px;
+    border-style: none;
+    position: relative;
+    top: 4px;
+  }
+
+  input, button {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .home, .shuffle {
+    width: 120px;
+  }
+
+  .search {
+    position: relative;
+    display: none;
+
+    .icon {
+      position: absolute;
+      right: 6px;
+      width: 32px;
+      z-index: 1;
+      color: #555;
+    }
+
+    input {
+      width: 200px;
+      border-radius: 44px;
+      padding: 0 16px;
+      text-align: center;
+      color: lighten( $text, 20% );
+    }
+
+    @media(min-width: 700px) {
+      display: flex;
+    }
+  }
+
+  .shuffle {
+    position: relative;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    input {
+      width: 60px;
+      background: transparent;
+      text-align: right;
+    }
+
+    button {
+      border: none;
+      background: none;
+      padding: 0;
+    }
+  }
+}
+
+.app {
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em $margin;
+  background: $header-bg;
+
+  .icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.article {
+  padding: 1em $margin;
+}
+
+.article:nth-child(even) {
+  background-color: $colour-c;
+}
+
+.article:nth-child(odd) {
+  background-color: $colour-b;
+}
+
+.article {
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0.5em 0 1em;
+  }
+}
+
+.tags {
+  text-align: center;
+  padding: 1em;
+}
+
+.app > .tags {
+  padding: $margin;
+}
+
+.tag {
+  display: inline-block;
+  margin: 2px;
+}
+.tag {
+  background-color: dimgray;
+  color: white;
+  border-radius: 2px;
+  text-decoration: none;
+  padding: 2px 8px;
+  margin: 0.25em;
+}
