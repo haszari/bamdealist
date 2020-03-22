@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import marked from 'marked';
 
 function normaliseItem(item) {

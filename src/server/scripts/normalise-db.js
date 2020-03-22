@@ -1,3 +1,5 @@
+// --- This is not maintained, may not work ---
+
 // Run a normalise over all items in the db.
 
 import mongoose from 'mongoose';

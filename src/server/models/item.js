@@ -1,6 +1,4 @@
-'use strict';
-
-import * as mdealib from "../../lib/mdealib.js";
+import * as mdealib from '../../lib/mdealib.js';
 
 import mongoose from 'mongoose';
 import hashtag from 'hashtag';
@@ -14,10 +12,10 @@ const MAX_CONTEXT_DEPTH = 3;
 function generateTitle(item) {
    var title = '';
    if (!item.title) {
-      if (item.type == 'listItem') {
+      if (item.type === 'listItem') {
          title = mdealib.trimMarkdown(item.content);
       }
-      if (item.type == 'headingItem') {
+      if (item.type === 'headingItem') {
          let maxContextHeading = _.maxBy(item.context, function(ctx) {
             return ctx.depth;
          });
@@ -33,7 +31,7 @@ function generateTitle(item) {
 
 function generateTextContent(item) {
    var textContent = '';
-   var renderer = new PlainTextRenderer;
+   var renderer = new PlainTextRenderer();
    textContent += ' ' + marked(item.content, { renderer: renderer });
    textContent += ' ' + marked(item.title, { renderer: renderer });
    return textContent;
@@ -51,7 +49,7 @@ function normaliseTagsArray(tags) {
    });
    // special processing for some tags
    tags = _.map(tags, tag => {
-      if (tag == 'tasks') return 'task';
+      if (tag === 'tasks') return 'task';
       return tag;
    });
    // remove duplicates
@@ -71,7 +69,7 @@ function parseHashtags(md) {
       var parserElements = hashtags.tokens;
       // keep only tags
       tags = _.filter(parserElements, element => {
-         return (element.type == 'tag');
+         return (element.type === 'tag');
       });
       tags = _.map(tags, 'tag');
    }
@@ -107,7 +105,7 @@ function parseEntityTags(md) {
       tags = tags.map(tag => {
          var stripped = tag;
          // strip html entities
-         stripped = stripped.replace(/\&.+;/g, '');
+         stripped = stripped.replace(/&.+;/g, '');
          // strip nonword chars
          stripped = stripped.replace(/\W/g, '');
          return stripped;
