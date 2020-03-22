@@ -30,7 +30,7 @@ This is a mongo dump of the database.
 - `docker-compose exec mongo mongoimport -d bamdealist -c items "/usr/src/backup/backups/${BACKUP_FILE}"`
 
 ### Import 
-- `docker-compose exec bamdealist npm run import -- -f  /usr/src/backup/tmp~~/${IMPORT_FILE}`
+- `docker-compose exec web npm run import -- -f  /usr/src/backup/tmp~~/${IMPORT_FILE}`
 
 Import from a [markdown](https://github.github.com/gfm/) file. 
 

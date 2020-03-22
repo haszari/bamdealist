@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
 
-import * as mdealib from "../../lib/mdealib";
+import * as mdealib from '../../lib/mdealib.js';
 
 import moment from 'moment';
 
@@ -12,9 +12,9 @@ import Promise from 'bluebird';
 
 import commandLineArgs from 'command-line-args';
 
-import ItemModel from '../models/item';
+import ItemModel from '../models/item.js';
 
-import connectToDb from '../db/connection';
+import connectToDb from '../db/connection.js';
 
 mongoose.Promise = Promise;
 
@@ -100,7 +100,7 @@ function processFolderOrFile(pathName, archiveFolder) {
    return savePromises;
 };
 
-var cli = commandLineArgs([
+var optionDefinitions = [
    {
       name: 'file', alias: 'f', type: String, defaultOption: true,
       description: 'Markdown file to import items from.'
@@ -109,9 +109,9 @@ var cli = commandLineArgs([
       name: 'archive', alias: 'a', type: String,
       description: 'Archive the file after importing. Option specifies the folder to archive to. If this option is set, the source file will be cleared after import (so can be reused).'
    }
-]);
+];
 
-var options = cli.parse();
+var options = commandLineArgs( optionDefinitions );
 
 if (options.file) {
 
@@ -129,7 +129,4 @@ if (options.file) {
       });
    });
 
-}
-else {
-   console.log(cli.getUsage());
 }
