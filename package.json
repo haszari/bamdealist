@@ -9,7 +9,7 @@
     "@reduxjs/toolkit": "1.2.5",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.4.1",
-    "@testing-library/user-event": "7.2.1",
+    "@testing-library/user-event": "10.0.1",
     "command-line-args": "5.1.1",
     "connect-history-api-fallback": "1.6.0",
     "express": "4.17.1",
