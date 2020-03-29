@@ -76,7 +76,7 @@ export function importMarkdownDiary(mdsrc, splitHeadingLevel, filename) {
 
       // what are we looking at? heading or other
       if (!ignoringLinesForFencedBlock && 
-         tokens.length && tokens[0].type == 'heading' && 
+         tokens.length && tokens[0].type === 'heading' && 
          tokens[0].depth <= splitHeadingLevel) {
          // this is a heading we might split on..
          var headingLevel = tokens[0].depth;
@@ -84,18 +84,18 @@ export function importMarkdownDiary(mdsrc, splitHeadingLevel, filename) {
 
          // if we are h2, check whether we change mode
          var prevMode = mode;
-         if (headingLevel == 2) {
-            if (headingText == 'tasks') {
+         if (headingLevel === 2) {
+            if (headingText === 'tasks') {
                mode = 'listItem';
             }
-            else if (headingText == 'history') {
+            else if (headingText === 'history') {
                mode = 'headingItem';
             }
             else { mode = 'idle'; }
          }
 
          // are we on a new item?
-         var modeChanged = prevMode != mode;
+         var modeChanged = prevMode !== mode;
          var newDiaryItem = (headingLevel <= splitHeadingLevel);
          if (newDiaryItem || modeChanged) {
             makeNextItem();
@@ -115,7 +115,7 @@ export function importMarkdownDiary(mdsrc, splitHeadingLevel, filename) {
       else {
          // if we've just finished a listitem, bump and move on
          let isSubitem = startsWithWhitespace.test(line);
-         if (mode == 'listItem' && !isSubitem) {
+         if (mode === 'listItem' && !isSubitem) {
             makeNextItem();
          }
 
@@ -136,7 +136,7 @@ export function importMarkdownDiary(mdsrc, splitHeadingLevel, filename) {
    });
 
    tidyItems = _.filter(tidyItems, function(tidy) {
-      var typeOk = tidy.type == 'listItem' || tidy.type == 'headingItem';
+      var typeOk = tidy.type === 'listItem' || tidy.type === 'headingItem';
       var contentOk = tidy.content.length;
       return (contentOk && typeOk);
    });
