@@ -363,3 +363,64 @@ a dangler on the end with
 } );
 
 
+test( 'imports list items with H2 ## tasks in the middle and H3 context', () => {
+  const md = `# #h1tag #h1concept
+            
+item 1
+      
+### 20200222 banana
+
+item 2
+
+## tasks
+
+item 3 with nested stuff
+  this is nested
+  and this too
+`;
+
+  const imported = mdealib.importMarkdownDiary( md );
+  expect( imported ).toHaveLength( 3 );
+  expect( imported[0] ).toEqual(
+    expect.objectContaining( {
+      content: 'item 1',
+      context: [{
+        depth: 1, 
+        markdown: '# #h1tag #h1concept',
+      }],
+      type: 'listItem',
+    } )
+  );
+  expect( imported[1] ).toEqual(
+    expect.objectContaining( {
+      content: 'item 2',
+      context: [{
+        depth: 1, 
+        markdown: '# #h1tag #h1concept',
+      }, {
+        depth: 3, 
+        markdown: '### 20200222 banana',
+      }],
+      type: 'listItem',
+    } )
+  );
+  expect( imported[2] ).toEqual(
+    expect.objectContaining( {
+      content: `item 3 with nested stuff
+  this is nested
+  and this too`,
+      context: [{
+        depth: 1, 
+        markdown: '# #h1tag #h1concept',
+      }, {
+        depth: 2, 
+        markdown: '## tasks',
+      }
+      // H3 context is reset by H2 ## tasks
+      ],
+      type: 'listItem',
+    } )
+  );
+} );
+
+
