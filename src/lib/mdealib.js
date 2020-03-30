@@ -46,7 +46,20 @@ export function importMarkdownDiary(mdsrc, splitHeadingLevel, filename) {
    // get all the lines in the file
    var mdsrclines = mdsrc.split('\n');
 
-   var mode = 'idle'; // 'idle' || 'tasks' || 'history'
+   // parser / importer mode
+   // ## tasks => 'listItem' (default) OR
+   // ## history => 'headingItem'
+   // tasks imports each line as a new item, including any subsequent indented lines
+   // history imports h4-delimited article items
+   // H1 sets to task mode by default
+   // mode is (optionally) changed by H2 headings - `history` imports articles, anything else switches to task mode
+   const LIST_MODE_TYPE = 'listItem';
+   const LIST_H2_KEYWORD = 'tasks';
+   const HEADING_MODE_TYPE = 'headingItem';
+   const HEADING_H2_KEYWORD = 'history';
+   const DEFAULT_MODE = LIST_MODE_TYPE;
+   var mode = LIST_MODE_TYPE; 
+
    var contextLines = []; // array of { md: , level: }
    var currentItem = 0;
    var ignoringLinesForFencedBlock = false;
@@ -57,14 +70,27 @@ export function importMarkdownDiary(mdsrc, splitHeadingLevel, filename) {
       });
    };
 
+   const updateContext = ( line, headingLevel ) => {
+      // filter out headings that this supercedes
+      contextLines = _.filter(contextLines, function(c) {
+         return c.depth < headingLevel;
+      });
+
+      // save this heading to the context
+      contextLines.push({
+         markdown: line, 
+         depth: headingLevel
+      });
+   }
+
    mdsrclines.forEach(function(line) {
       // md-parse the line
       let tokens = marked.lexer(line);
       
       // check for a fenced code block
       // this might contain stuff that looks like headings/context!
-      if (startsWithFence.test(line)) {
-         if (!ignoringLinesForFencedBlock) {
+      if ( startsWithFence.test( line ) ) {
+         if ( ! ignoringLinesForFencedBlock ) {
             // start ignoring lines (for headings) - we're in a code block
             ignoringLinesForFencedBlock = true;
          }
@@ -74,71 +100,84 @@ export function importMarkdownDiary(mdsrc, splitHeadingLevel, filename) {
          }
       }
 
-      // what are we looking at? heading or other
-      if (!ignoringLinesForFencedBlock && 
-         tokens.length && tokens[0].type === 'heading' && 
-         tokens[0].depth <= splitHeadingLevel) {
+      const isHeading = tokens.length && tokens[0].type === 'heading';
+
+      // If this is H1, H2 or H3, set context tags and update mode.
+      if ( ! ignoringLinesForFencedBlock && 
+         isHeading && 
+         tokens[0].depth < splitHeadingLevel) {
+
          // this is a heading we might split on..
          var headingLevel = tokens[0].depth;
          var headingText = tokens[0].text;
+         var prevMode = mode;
+
+         // if we are h1, set default (list) mode
+         if ( headingLevel === 1 ) {
+            mode = DEFAULT_MODE;
+         }
 
          // if we are h2, check whether we change mode
-         var prevMode = mode;
-         if (headingLevel === 2) {
-            if (headingText === 'tasks') {
-               mode = 'listItem';
+         if ( headingLevel === 2 ) {
+            if ( headingText === LIST_H2_KEYWORD ) {
+               mode = LIST_MODE_TYPE;
             }
-            else if (headingText === 'history') {
-               mode = 'headingItem';
+            else if ( headingText === HEADING_H2_KEYWORD ) {
+               mode = HEADING_MODE_TYPE;
             }
-            else { mode = 'idle'; }
+            else { mode = DEFAULT_MODE; }
          }
 
-         // are we on a new item?
+         /// not sure if this is doing anything useful
          var modeChanged = prevMode !== mode;
-         var newDiaryItem = (headingLevel <= splitHeadingLevel);
-         if (newDiaryItem || modeChanged) {
+         if ( modeChanged ) {
             makeNextItem();
          }
 
-         // filter out headings that this supercedes
-         contextLines = _.filter(contextLines, function(c) {
-            return c.depth < headingLevel;
-         });
+         updateContext( line, tokens[0].depth );
 
-         // save this heading to the context
-         contextLines.push({
-            markdown: line, 
-            depth: headingLevel
-         });
+         return;
       }
-      else {
-         // if we've just finished a listitem, bump and move on
-         let isSubitem = startsWithWhitespace.test(line);
-         if (mode === 'listItem' && !isSubitem) {
-            makeNextItem();
-         }
 
-         // just update the current item and proceed
-         items[currentItem].lines.push(line);
-         items[currentItem].type = mode;
-         items[currentItem].context = contextLines;
+      // If this is H4-splitHeadingLevel then cut off previous item and start new one.
+      if ( ! ignoringLinesForFencedBlock && 
+         isHeading && 
+         tokens[0].depth === splitHeadingLevel) {
+
+         makeNextItem();
+
+         updateContext( line, tokens[0].depth );
+
+         return;
       }
+
+      // if we get to here we are some content that needs to be stored in an item
+
+      // if we've just finished a listitem, bump and move on
+      let isSubitem = startsWithWhitespace.test(line);
+      if ( mode === LIST_MODE_TYPE && ! isSubitem ) {
+         makeNextItem();
+      }
+
+      // just update the current item and proceed
+      items[currentItem].lines.push( line );
+      items[currentItem].type = mode;
+      items[currentItem].context = contextLines;
    });
 
    var tidyItems = _.map(items, function(item) {
       return {
-         content: item.lines.join('\n'),
+         content: item.lines.join('\n').trim(),
          context: item.context,
          type: item.type,
          filename: filename
       };
    });
 
-   tidyItems = _.filter(tidyItems, function(tidy) {
-      var typeOk = tidy.type === 'listItem' || tidy.type === 'headingItem';
+   tidyItems = _.filter( tidyItems, function( tidy ) {
+      var typeOk = tidy.type === LIST_MODE_TYPE || tidy.type === HEADING_MODE_TYPE;
       var contentOk = tidy.content.length;
-      return (contentOk && typeOk);
+      return ( contentOk && typeOk );
    });
 
    tidyItems = _.map(tidyItems, normaliseItem);
