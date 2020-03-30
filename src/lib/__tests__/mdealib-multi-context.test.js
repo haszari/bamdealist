@@ -104,3 +104,125 @@ do a job
 
 } );
 
+test( 'imports list items grouped by H1 context with H3 context', () => {
+  const md = `# #fun #drama #conflict
+
+- watch 124
+
+### 20201212
+
+- watch 409
+
+eat chips daringly
+
+# #work #business #commerce
+
+### 20201212
+
+task 1
+
+do a job
+  and then some
+
+### 20201213
+
+- get a haircut
+- shake a tower
+`;
+
+  const imported = mdealib.importMarkdownDiary( md );
+  expect( imported ).toHaveLength( 7 );
+
+  expect( imported[0] ).toEqual(
+    expect.objectContaining( {
+      content: '- watch 124',
+      context: [{
+        depth: 1, 
+        markdown: '# #fun #drama #conflict',
+      }],
+      type: 'listItem',
+    } )
+  );
+  expect( imported[1] ).toEqual(
+    expect.objectContaining( {
+      content: '- watch 409',
+      context: [{
+        depth: 1, 
+        markdown: '# #fun #drama #conflict',
+      }, {
+        depth: 3, 
+        markdown: '### 20201212',
+      }],
+      type: 'listItem',
+    } )
+  );
+  expect( imported[2] ).toEqual(
+    expect.objectContaining( {
+      content: 'eat chips daringly',
+      context: [{
+        depth: 1, 
+        markdown: '# #fun #drama #conflict',
+      }, {
+        depth: 3, 
+        markdown: '### 20201212',
+      }],
+      type: 'listItem',
+    } )
+  );
+
+  expect( imported[3] ).toEqual(
+    expect.objectContaining( {
+      content: 'task 1',
+      context: [{
+        depth: 1, 
+        markdown: '# #work #business #commerce',
+      }, {
+        depth: 3, 
+        markdown: '### 20201212',
+      }],
+      type: 'listItem',
+    } )
+  );
+  expect( imported[4] ).toEqual(
+    expect.objectContaining( {
+      content: `do a job
+  and then some`,
+      context: [{
+        depth: 1, 
+        markdown: '# #work #business #commerce',
+      }, {
+        depth: 3, 
+        markdown: '### 20201212',
+      }],
+      type: 'listItem',
+    } )
+  );
+  expect( imported[5] ).toEqual(
+    expect.objectContaining( {
+      content: '- get a haircut',
+      context: [{
+        depth: 1, 
+        markdown: '# #work #business #commerce',
+      }, {
+        depth: 3, 
+        markdown: '### 20201213',
+      }],
+      type: 'listItem',
+    } )
+  );
+  expect( imported[6] ).toEqual(
+    expect.objectContaining( {
+      content: '- shake a tower',
+      context: [{
+        depth: 1, 
+        markdown: '# #work #business #commerce',
+      }, {
+        depth: 3, 
+        markdown: '### 20201213',
+      }],
+      type: 'listItem',
+    } )
+  );
+
+} );
+
