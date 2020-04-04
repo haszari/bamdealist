@@ -13,7 +13,7 @@ services:
    web:
       image: 'node:latest' 
       # build: ./docker
-      # restart: always
+      restart: always
       working_dir: /usr/src/app
       command: node src/server/server
       depends_on: 
