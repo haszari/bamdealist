@@ -2,6 +2,9 @@ bamdealist-backup/*
 *.orig
 .env
 
+# docker override - used for custom config for production or development
+docker-compose.override.yml
+
 # dependencies
 /node_modules
 /.pnp
