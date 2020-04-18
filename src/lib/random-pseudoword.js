@@ -17,7 +17,7 @@ const arrayModAt = function(array, index) {
   return array[index % array.length];
 };
 
-export const randomPseudoword = (options) => {
+const randomPseudoword = (options) => {
   options = defaults(options, {
     maxSyllables: 5,
     minSyllables: 3,
@@ -68,3 +68,5 @@ export const randomPseudoword = (options) => {
   
   return word;
 }
+
+export default randomPseudoword;

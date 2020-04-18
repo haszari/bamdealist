@@ -32,12 +32,21 @@ import Pagination from './components/Pagination';
 import TagCloud from './components/TagCloud';
 import Items from './components/Items';
 import Item from './components/Item';
+import RandomWurd from './components/RandomWurd';
 import Navigation from './components/Navigation';
 
 import './style/App.scss';
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
+}
+
+function RandomWurdView() {
+  return (
+    <div className='app'>
+      <RandomWurd />
+    </div>
+   );
 }
 
 function ArticleView() {
@@ -124,6 +133,9 @@ function App() {
           <Navigation />
 
           <Switch>
+            <Route path="/wurd" children={ 
+                <RandomWurdView />
+            } />
             <Route path="/item/:id" children={ 
                 <HydratedArticleView />
             } />
