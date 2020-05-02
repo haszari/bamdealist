@@ -1,12 +1,18 @@
 import React from 'react';
 
 import {
+  BlockEditorKeyboardShortcuts,
   BlockEditorProvider,
   BlockList,
+  BlockInspector,
   WritingFlow,
-  ObserveTyping
+  ObserveTyping,
 } from '@wordpress/block-editor';
-import { Popover } from '@wordpress/components';
+import {
+  Popover,
+  SlotFillProvider,
+  DropZoneProvider,
+} from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 import '@wordpress/components/build-style/style.css';
@@ -19,18 +25,29 @@ function Editor () {
   const [ blocks, updateBlocks ] = useState( [] );
 
   return (
-    <BlockEditorProvider
-      value={ blocks }
-      onInput={ updateBlocks }
-      onChange={ updateBlocks }
-    >
-      <WritingFlow>
-        <ObserveTyping>
-          <BlockList />
-        </ObserveTyping>
-      </WritingFlow>
-      <Popover.Slot />
-    </BlockEditorProvider>
+    <SlotFillProvider>
+      <DropZoneProvider>
+        <BlockEditorProvider
+          value={ blocks }
+          onInput={ updateBlocks }
+          onChange={ updateBlocks }
+        >
+          <div className="editor-sidebar">
+            <BlockInspector />
+          </div>
+          <div className="editor-styles-wrapper">
+            <Popover.Slot name="block-toolbar" />
+            <BlockEditorKeyboardShortcuts />
+            <WritingFlow>
+              <ObserveTyping>
+                <BlockList />
+              </ObserveTyping>
+            </WritingFlow>
+          </div>
+          <Popover.Slot />
+        </BlockEditorProvider>
+      </DropZoneProvider>
+    </SlotFillProvider>
   );
 }
 
