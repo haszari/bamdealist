@@ -20,7 +20,7 @@
     "marked-plaintext": "0.0.2",
     "moment": "2.25.3",
     "mongoose": "5.9.12",
-    "node-sass": "4.14.0",
+    "node-sass": "4.14.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "7.2.0",
