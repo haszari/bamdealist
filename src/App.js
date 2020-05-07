@@ -35,10 +35,20 @@ import Item from './components/Item';
 import RandomWurd from './components/RandomWurd';
 import Navigation from './components/Navigation';
 
+import Editor from './components/Editor';
+
 import './style/App.scss';
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
+}
+
+function EditorView() {
+  return (
+    <div className='app editor'>
+      <Editor />
+    </div>
+   );
 }
 
 function RandomWurdView() {
@@ -133,6 +143,9 @@ function App() {
           <Navigation />
 
           <Switch>
+            <Route path="/edit" children={ 
+                <EditorView />
+            } />
             <Route path="/wurd" children={ 
                 <RandomWurdView />
             } />
