@@ -34,12 +34,23 @@ import Items from './components/Items';
 import Item from './components/Item';
 import RandomWurd from './components/RandomWurd';
 import Navigation from './components/Navigation';
+import Editor from './components/Editor';
+
 
 import './style/App.scss';
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
 }
+
+function EditorView() {
+   return (
+     <div className='app editor'>
+       <Editor />
+     </div>
+    );
+ }
+
 
 function RandomWurdView() {
   return (
@@ -128,30 +139,29 @@ function HydratedListView() {
 function App() {
 
   return (
-      <Router>
-        <Provider store={ store }>
-          <Navigation />
+    <Router>
+      <Provider store={ store }>
+        <Navigation />
 
-          <Switch>
-            <Route path="/wurd" children={ 
-                <RandomWurdView />
-            } />
-            <Route path="/item/:id" children={ 
-                <HydratedArticleView />
-            } />
-            <Route path="/lucky" children={ 
-                <>
-                  <HydratedShuffleView />
-                </>
-            } />
-            <Route path="/" children={ 
-                <>
-                  <HydratedListView />
-                </>
-            } />
-          </Switch>
-        </Provider>
-      </Router>
+        <Switch>
+          <Route path="/edit" children={ 
+            <EditorView />
+          } />
+          <Route path="/wurd" children={ 
+            <RandomWurdView />
+          } />
+          <Route path="/item/:id" children={ 
+            <HydratedArticleView />
+          } />
+          <Route path="/lucky" children={ 
+            <HydratedShuffleView />
+          } />
+          <Route path="/" children={ 
+            <HydratedListView />
+          } />
+        </Switch>
+      </Provider>
+    </Router>
   );
 }
 
