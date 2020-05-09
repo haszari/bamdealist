@@ -43,12 +43,19 @@ function useQuery() {
   return new URLSearchParams( useLocation().search );
 }
 
-function EditorView() {
-   return (
-     <div className='app editor'>
-       <Editor />
-     </div>
-    );
+function HydratedEditorView() {
+  let { id } = useParams();
+
+  useEffect( () => {
+    store.dispatch( setId( id ) );
+    store.dispatch( hydrateArticle() );
+  }, [ id ] );
+
+  return (
+    <div className='app editor'>
+      <Editor />
+    </div>
+  );
  }
 
 
@@ -144,14 +151,14 @@ function App() {
         <Navigation />
 
         <Switch>
-          <Route path="/edit" children={ 
-            <EditorView />
-          } />
           <Route path="/wurd" children={ 
             <RandomWurdView />
           } />
           <Route path="/item/:id" children={ 
             <HydratedArticleView />
+          } />
+          <Route path="/edit/:id" children={ 
+            <HydratedEditorView />
           } />
           <Route path="/lucky" children={ 
             <HydratedShuffleView />
