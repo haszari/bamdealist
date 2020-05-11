@@ -2,11 +2,11 @@ import { createAction } from '@reduxjs/toolkit';
 
 import { apiBase } from '../../lib/api';
 
-import { getId } from './selectors';
+import { getId, getArticle } from './selectors';
 
 export const setId = createAction( 'article/setArticleId' );
 
-export const articleReceived = createAction( 'transport/itemsReceived' );
+export const articleReceived = createAction( 'article/itemsReceived' );
 
 const fetchArticle = async ( { id } ) => {
   const response = await fetch( `${ apiBase }Item/${ id }` );
@@ -18,4 +18,27 @@ export const hydrateArticle = () => async ( dispatch, state ) => {
   const id = getId( current );
   const response = await fetchArticle( { id } );
   dispatch( articleReceived( response ) );
+}
+
+export const persistArticle = ( { id, content }  ) => async ( dispatch, state ) => {
+  // todo set "saving" flag
+
+  console.log( 'I wanna save!', id, content );
+  const current = getArticle( state() )
+  const newArticle = { 
+    ...current,
+    content: content,
+  };
+  await fetch( `${ apiBase }Item/${ id }`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify( newArticle ),
+  } );
+  // update - various derived fields may have changed
+  // const response = await fetchArticle( { id } );
+  // dispatch( articleReceived( response ) );
+
+  // todo reset "saving" flag
 }

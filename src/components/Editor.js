@@ -5,6 +5,10 @@ import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/scss/react-mde-all.scss';
 
 import { getArticle } from '../store/article/selectors';
+import {
+  persistArticle,
+} from '../store/article/actions';
+import store from '../store';
 
 import markdownRenderer from '../lib/markdown-renderer';
 
@@ -13,18 +17,18 @@ function Editor () {
   const item = useSelector( getArticle );
 
   // Store the edited item content in local state.
-  const [ value, setValue ] = React.useState( false );
+  const [ content, setContent ] = React.useState( false );
 
   // The item is loaded dynamically after we are mounted; 
   // populate the state after load.
   useEffect( () => {
-    if ( item.content && false === value) {
-      setValue( item.content );
+    if ( item.content && false === content) {
+      setContent( item.content );
     }
-  }, [ item.content, value ] );
+  }, [ item.content, content ] );
 
   const save = () => {
-    // here we need to persist `value` via rest API
+    store.dispatch( persistArticle( { id: item._id, content } ) );
   };
 
   const [ selectedTab, setSelectedTab ] = React.useState("write");
@@ -32,8 +36,8 @@ function Editor () {
       <>
         <button onClick={ save }>Save</button>
         <ReactMde
-          value={ value }
-          onChange={ setValue }
+          value={ content }
+          onChange={ setContent }
           selectedTab={ selectedTab }
           onTabChange={ setSelectedTab }
           generateMarkdownPreview={ markdown =>
