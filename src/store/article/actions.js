@@ -20,14 +20,16 @@ export const hydrateArticle = () => async ( dispatch, state ) => {
   dispatch( articleReceived( response ) );
 }
 
-export const persistArticle = ( { id, content }  ) => async ( dispatch, state ) => {
+export const persistArticle = ( { id, title, content, userTags }  ) => async ( dispatch, state ) => {
   // todo set "saving" flag
 
   console.log( 'I wanna save!', id, content );
   const current = getArticle( state() )
   const newArticle = { 
     ...current,
-    content: content,
+    title, 
+    content,
+    userTags,
   };
   await fetch( `${ apiBase }Item/${ id }`, {
     method: 'PATCH',
