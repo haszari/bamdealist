@@ -43,14 +43,16 @@ function Editor () {
   return (
       <>
         <ReactMde
+          classes={{ reactMde: 'editor-title' }}
           value={ title }
           disablePreview={ true }
           toolbarCommands={ [] }
-          minEditorHeight={ 40 }
-          maxEditorHeight={ 40 }
+          minEditorHeight={ 50 }
+          maxEditorHeight={ 50 }
           onChange={ setTitle }
         />
         <ReactMde
+          classes={{ reactMde: 'editor-content' }}
           value={ content }
           onChange={ setContent }
           selectedTab={ selectedTab }
@@ -59,7 +61,8 @@ function Editor () {
             Promise.resolve( markdownRenderer( markdown ) )
           }
         />
-        <input 
+        <textarea 
+          className='editor-tags'
           value={ tags }
           onChange={ event => setTags( event.target.value ) }
         />
