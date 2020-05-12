@@ -47,8 +47,8 @@ function Editor () {
           value={ title }
           disablePreview={ true }
           toolbarCommands={ [] }
-          minEditorHeight={ 50 }
-          maxEditorHeight={ 50 }
+          minEditorHeight={ 58 }
+          maxEditorHeight={ 58 }
           onChange={ setTitle }
         />
         <ReactMde
