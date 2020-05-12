@@ -23,7 +23,6 @@ export const hydrateArticle = () => async ( dispatch, state ) => {
 export const persistArticle = ( { id, title, content, userTags }  ) => async ( dispatch, state ) => {
   // todo set "saving" flag
 
-  console.log( 'I wanna save!', id, content );
   const current = getArticle( state() )
   const newArticle = { 
     ...current,
