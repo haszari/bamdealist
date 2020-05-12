@@ -44,12 +44,11 @@ function Editor () {
       <>
         <ReactMde
           value={ title }
+          disablePreview={ true }
+          toolbarCommands={ [] }
+          minEditorHeight={ 40 }
+          maxEditorHeight={ 40 }
           onChange={ setTitle }
-          selectedTab={ selectedTab }
-          onTabChange={ setSelectedTab }
-          generateMarkdownPreview={ markdown =>
-            Promise.resolve( markdownRenderer( markdown ) )
-          }
         />
         <ReactMde
           value={ content }
