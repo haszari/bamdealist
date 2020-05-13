@@ -1,6 +1,8 @@
 import path from 'path';
 import express from 'express';
 import historyApiFallback from 'connect-history-api-fallback';
+import bodyParser from 'body-parser';
+import methodOverride from 'method-override';
 
 import dbRouter from './db-routes.js';
 
@@ -23,6 +25,7 @@ app.use(function(req, res, next) {
   // actually could allow * in development mode
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "PUT, PATCH");
   next();
 });
 
@@ -30,8 +33,6 @@ app.use(function(req, res, next) {
 
 /*
 const { URL } = require('url');
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
 var session = require("express-session");
 var passport = require('passport');
 // var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -47,9 +48,6 @@ const loginPagePath = '/login';
 app.use(session({ secret: process.env.SESSION_SECRET || 'fancy-feast' }));
 // is this (urlencoded) required for passport? 
 app.use(bodyParser.urlencoded({ extended: false })); 
-// these help express-restify-mongoose do its job
-app.use(bodyParser.json()); 
-app.use(methodOverride());
 
 // setupAuthentication({
 //    expressApp: app, 
@@ -83,7 +81,10 @@ app.get(loginPagePath, function (req, res) {
 
 if (dbRouter) {
    // app.use(ensureAuthenticated, dbRouter);
-   app.use(dbRouter);
+  // these help express-restify-mongoose do its job
+  app.use(bodyParser.json()); 
+  app.use(methodOverride());
+  app.use(dbRouter);
 
    // pull in api and expose api routes
    // (this is a slightly generic mechanism that I'm not using)
