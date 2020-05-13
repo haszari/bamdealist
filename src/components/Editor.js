@@ -66,7 +66,7 @@ function Editor () {
           value={ tags }
           onChange={ event => setTags( event.target.value ) }
         />
-        <button onClick={ save }>Save</button>
+        <button className='editor-save' onClick={ save }>Save</button>
       </>
   );
 }

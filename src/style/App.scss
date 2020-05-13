@@ -18,11 +18,43 @@ pre {
 a, a:visited {
   color: $link;
   text-decoration: none;
+  font-weight: 500;
 }
 
 // reset search input
 input[type=search] {
   -webkit-appearance: textfield;
+}
+
+// With thanks to css-tricks https://css-tricks.com/overriding-default-button-styles/
+button {
+  display: inline-block;
+  border: none;
+  text-decoration: none;
+  background-color: $tag-bg;
+  color: $tag-text;
+  padding: 1em 2em;
+  font-size: 1em;
+  line-height: 1;
+  cursor: pointer;
+  text-align: center;
+  transition: background 250ms ease-in-out, transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button:hover,
+button:focus {
+  background: lighten( $tag-bg, 2 );
+}
+
+button:focus {
+  outline: 1px solid $tag-text;
+  outline-offset: -1px;
+}
+
+button:active {
+    transform: scale(0.99);
 }
 
 .navigation {
@@ -60,6 +92,8 @@ input[type=search] {
     &:focus {
       outline: none;
     }
+
+    color: black;
   }
 
   .home, .shuffle {
@@ -195,6 +229,12 @@ input[type=search] {
     .mde-header {
       background: rgba( black, 0.2 );
       border: none;
+
+      button {
+        // reset BAMdealist button style
+        padding: 0.5em;
+        color: black;
+      }
     }
   }
 
@@ -213,7 +253,6 @@ input[type=search] {
     }
   }
 
-
   .editor-content textarea,
   .editor-content .mde-preview {
     font-size: $font-size;
@@ -229,5 +268,12 @@ input[type=search] {
     background: transparent;
     word-spacing: 0.5em;
     padding: 0;
+  }
+
+  .editor-save {
+    margin-top: 2em;
+    float: right;
+    font-weight: 500;
+    font-size: 1.2em;
   }
 }
