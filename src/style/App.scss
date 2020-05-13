@@ -169,8 +169,8 @@ input[type=search] {
   margin: 2px;
 }
 .tag {
-  background-color: dimgray;
-  color: white;
+  background-color: $tag-bg;
+  color: $tag-text;
   border-radius: 2px;
   text-decoration: none;
   padding: 2px 8px;
