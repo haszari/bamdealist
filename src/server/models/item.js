@@ -352,7 +352,6 @@ schema.methods.importContextTags = function() {
 };
 
 schema.pre('save', function(next) {
-   console.log( 'pre save', this._id, this.title, this.content );
    this.normalise();
    this.updated = Date.now();
    next();
