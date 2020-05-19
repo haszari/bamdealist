@@ -6,7 +6,7 @@ $heading-font-size: 2em;
 $font-size: 1.2em;
 
 body {
-  background-color: $background;
+  background-color: $header-bg;
   color: $text;
   overflow-wrap: break-word;
 }
@@ -195,6 +195,7 @@ button:active {
 }
 
 .app > .tags {
+  background: $colour-c;
   padding: $margin;
 }
 
