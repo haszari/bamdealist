@@ -5,11 +5,12 @@ export const DEFAULT_PAGINATION = {
    skipToItem: 0
 };
 
-export function formatMongoSearchQuery( tagsArray, textSearch, startDate, endDate, max, skip ) {
-   var query = {}, clauses = [];
+export function formatMongoSearchQuery( args ) {
+   const { tags: tagsArray, excludeTags, search: textSearch, startDate, endDate } = args;
+   let query = {}, clauses = [];
 
-   var startDateNum = Date.parse( startDate );
-   var endDateNum = Date.parse( endDate );
+   let startDateNum = Date.parse( startDate );
+   let endDateNum = Date.parse( endDate );
    if ( startDate && _.isFinite( startDateNum ) ) {
       clauses.push( {
          originated: {
@@ -29,6 +30,14 @@ export function formatMongoSearchQuery( tagsArray, textSearch, startDate, endDat
       clauses.push({
          lowerCaseTags: {
             $all: _.map( tagsArray, tag => tag.toLowerCase() )
+         }
+      });
+   }
+   
+   if ( excludeTags && excludeTags.length ) {
+      clauses.push({
+         lowerCaseTags: {
+            $nin: _.map( excludeTags, tag => tag.toLowerCase() )
          }
       });
    }

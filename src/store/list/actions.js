@@ -25,19 +25,19 @@ export const setFilterTags = createAction( 'list/setFilterTags' );
 export const setFilterSearch = createAction( 'list/setFilterSearch' );
 
 const fetchTags = async ( { tags = [], search = '' } ) => {
-  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags, search ) );
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( { tags, search } ) );
   const response = await fetch( `${ apiBase }tags?query=${ mongoQuery }` );
   return response.json();
 }
 
 const fetchItems = async ( { limit = 1, skip = 0, tags = [], search = '' } ) => {
-  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags, search ) );
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( { tags, search } ) );
   const response = await fetch( `${ apiBase }Item/?limit=${ limit }&skip=${ skip }&sort={"originated":-1}&query=${ mongoQuery }` );
   return response.json();
 }
 
 const fetchShuffledItems = async ( { limit = 1, skip = 0, tags = [], search = '' } ) => {
-  const mongoQuery = JSON.stringify( formatMongoSearchQuery( tags, search ) );
+  const mongoQuery = JSON.stringify( formatMongoSearchQuery( { tags, search } ) );
   const response = await fetch( `${ apiBase }lucky/?limit=${ limit }&skip=${ skip }&sort={"originated":-1}&query=${ mongoQuery }` );
   return response.json();
 }
