@@ -17,6 +17,23 @@ const API_PREFIX = '/api';
 const API_VERSION = '/v1';
 const API_PATH = API_PREFIX + API_VERSION;
 
+const getRequestParams = ( queryParams ) => {
+   let matchQuery = {};
+   let limit = 250;
+
+   if ( queryParams.query ) {
+      matchQuery = JSON.parse( queryParams.query );
+   }
+   if ( queryParams.limit ) {
+      limit = parseInt( queryParams.limit );
+   }
+
+   return {
+      matchQuery, 
+      limit,
+   };
+}
+
 // regular REST routes for Item collection
 restify.serve(router, ItemModel, {
    prefix: API_PREFIX,
@@ -38,10 +55,7 @@ db.once('open', function() {
 
    // tag cloud api, optionally filtered by tag/text search
    router.get(API_PATH + '/tags', function(request, response) {
-      var matchQuery = {};
-      if (request.query.query) {
-         matchQuery = JSON.parse(request.query.query);
-      }
+      const { matchQuery, limit } = getRequestParams( request.query );
       ItemModel.aggregate([
          { $match: matchQuery },
          { $project: { tags: 1 } },
@@ -53,6 +67,7 @@ db.once('open', function() {
          } },
          { $match: { _id: { $nin: hiddenTagsStringOrRegex } } },
          { $sort: { count: -1 } },
+         { $limit: limit }
       ]).exec( function(err, result) {
          if (err) return console.log(err);
          response.send(result);
@@ -61,13 +76,7 @@ db.once('open', function() {
 
    // randomly pick an item, optionally filtered by tag/text search
    router.get( API_PATH + '/lucky', function( request, response ) {
-      let matchQuery = {}, limit = 1;
-      if ( request.query.query ) {
-         matchQuery = JSON.parse( request.query.query );
-      }
-      if ( request.query.limit ) {
-         limit = parseInt( request.query.limit );
-      }
+      const { matchQuery, limit } = getRequestParams( request.query );
       ItemModel.aggregate( [
          { $match: matchQuery },
          { $sample: { size: limit } }, 

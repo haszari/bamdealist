@@ -11,7 +11,7 @@ import { listUrl } from '../lib/route-url';
 import Tag from './Tag';
 
 function tagFontSize( tagHitCount, maxHitCount ) {
-  const minSize = 8, sizeRange = 30;
+  const minSize = 6, sizeRange = 36;
   var size = 0;
   size = tagHitCount / maxHitCount;
   size = size * sizeRange;
