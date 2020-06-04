@@ -9,6 +9,9 @@ import {
   useParams,
 } from 'react-router-dom';
 
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 import {
   setPagination,
   setFilterTags,
@@ -38,6 +41,16 @@ import Editor from './components/Editor';
 
 
 import './style/App.scss';
+
+const theme = createMuiTheme( {
+  typography: {
+    fontFamily: [ 'Roboto', 'Helvetica', 'Arial', 'sans-serif' ],
+    button: {
+      textTransform: 'none',
+    }
+  },
+} );
+
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
@@ -148,25 +161,28 @@ function App() {
   return (
     <Router>
       <Provider store={ store }>
-        <Navigation />
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Navigation />
 
-        <Switch>
-          <Route path="/wurd" children={ 
-            <RandomWurdView />
-          } />
-          <Route path="/item/:id" children={ 
-            <HydratedArticleView />
-          } />
-          <Route path="/edit/:id" children={ 
-            <HydratedEditorView />
-          } />
-          <Route path="/lucky" children={ 
-            <HydratedShuffleView />
-          } />
-          <Route path="/" children={ 
-            <HydratedListView />
-          } />
-        </Switch>
+          <Switch>
+            <Route path="/wurd" children={ 
+              <RandomWurdView />
+            } />
+            <Route path="/item/:id" children={ 
+              <HydratedArticleView />
+            } />
+            <Route path="/edit/:id" children={ 
+              <HydratedEditorView />
+            } />
+            <Route path="/lucky" children={ 
+              <HydratedShuffleView />
+            } />
+            <Route path="/" children={ 
+              <HydratedListView />
+            } />
+          </Switch>
+        </ThemeProvider>
       </Provider>
     </Router>
   );
