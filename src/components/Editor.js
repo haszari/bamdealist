@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import Button from '@material-ui/core/Button';
 
 import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/scss/react-mde-all.scss';
@@ -11,7 +14,7 @@ import {
 import store from '../store';
 
 import markdownRenderer from '../lib/markdown-renderer';
-
+import { articleUrl } from '../lib/route-url';
 
 function Editor () {
   const item = useSelector( getArticle );
@@ -66,7 +69,8 @@ function Editor () {
           value={ tags }
           onChange={ event => setTags( event.target.value ) }
         />
-        <button className='editor-save' onClick={ save }>Save</button>
+        <Button onClick={ save }>Save</Button>
+        <Button component={ Link } to={ articleUrl( item._id ) }>Done</Button>
       </>
   );
 }
