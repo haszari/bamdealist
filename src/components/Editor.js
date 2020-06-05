@@ -9,9 +9,10 @@ import { useDebouncedCallback } from 'use-debounce';
 import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/scss/react-mde-all.scss';
 
-import { getArticle } from '../store/article/selectors';
+import { getArticle, isDirty, isSaving } from '../store/article/selectors';
 import {
   persistArticle,
+  setDirty, 
 } from '../store/article/actions';
 import store from '../store';
 
@@ -20,6 +21,8 @@ import { articleUrl } from '../lib/route-url';
 
 function Editor () {
   const item = useSelector( getArticle );
+  const dirty = useSelector( isDirty );
+  const saving = useSelector( isSaving );
 
   // Store the edited item content in local state.
   const [ title, setTitle ] = React.useState( false );
@@ -54,6 +57,7 @@ function Editor () {
   // - save new value in local state, using a setState func
   // - trigger a debounced update
   const onChange = ( setStateFunc, value ) => {
+    store.dispatch( setDirty( true ) );
     setStateFunc( value );
     debouncedSave(); 
   }
@@ -85,7 +89,7 @@ function Editor () {
           value={ tags }
           onChange={ event => onChange( setTags, event.target.value ) }
         />
-        <Button component={ Link } to={ articleUrl( item._id ) }>Done</Button>
+        <Button component={ Link } to={ articleUrl( item._id ) } disabled={ dirty || saving }>Done</Button>
       </>
   );
 }

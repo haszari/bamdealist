@@ -8,6 +8,10 @@ export const setId = createAction( 'article/setArticleId' );
 
 export const articleReceived = createAction( 'article/itemsReceived' );
 
+export const setSaving = createAction( 'article/setSaving' );
+
+export const setDirty = createAction( 'article/setDirty' );
+
 const fetchArticle = async ( { id } ) => {
   const response = await fetch( `${ apiBase }Item/${ id }` );
   return response.json();
@@ -21,7 +25,8 @@ export const hydrateArticle = () => async ( dispatch, state ) => {
 }
 
 export const persistArticle = ( { id, title, content, userTags }  ) => async ( dispatch, state ) => {
-  // todo set "saving" flag
+  dispatch( setSaving( true ) );
+  dispatch( setDirty( false ) );
 
   const current = getArticle( state() )
   const newArticle = { 
@@ -41,5 +46,8 @@ export const persistArticle = ( { id, title, content, userTags }  ) => async ( d
   // const response = await fetchArticle( { id } );
   // dispatch( articleReceived( response ) );
 
-  // todo reset "saving" flag
+  // todo handle errors
+  // if error, setDirty( true ) again
+
+  dispatch( setSaving( false ) );
 }
