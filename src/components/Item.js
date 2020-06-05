@@ -1,9 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 
 import markdownRenderer from '../lib/markdown-renderer';
+import { editArticleUrl } from '../lib/route-url';
 
 import { getArticle } from '../store/article/selectors';
 
@@ -24,7 +26,7 @@ function Item() {
         <TagList tags={ item.tags } /> 
       </div> 
       <div className='article-toolbar'>
-        <Button>Edit</Button>
+        <Button component={ Link } to={ editArticleUrl( item._id ) }>Edit</Button>
       </div>
     </>
   );

@@ -1,3 +1,7 @@
+/**
+  Utility functions for generating urls to app routes.
+ */
+
 
 export function listUrl( { tags, search, shuffle } ) {
   const params = new URLSearchParams();
@@ -16,4 +20,8 @@ export function listUrl( { tags, search, shuffle } ) {
 
 export function articleUrl( id ) {
   return `/item/${ id }`;
+}
+
+export function editArticleUrl( id ) {
+  return `/edit/${ id }`;
 }
