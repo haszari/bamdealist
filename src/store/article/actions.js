@@ -35,19 +35,25 @@ export const persistArticle = ( { id, title, content, userTags }  ) => async ( d
     content,
     userTags,
   };
-  await fetch( `${ apiBase }Item/${ id }`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify( newArticle ),
-  } );
+  try {  
+    const response = await fetch( `${ apiBase }Item/${ id }`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify( newArticle ),
+    } );
+    if ( 200 !== response.status ) {
+      dispatch( setDirty( true ) );
+    }
+  }
+  catch ( error ) {
+    // If save failed, then we're dirty again.
+    dispatch( setDirty( true ) );
+  }
   // update - various derived fields may have changed
   // const response = await fetchArticle( { id } );
   // dispatch( articleReceived( response ) );
-
-  // todo handle errors
-  // if error, setDirty( true ) again
 
   dispatch( setSaving( false ) );
 }
