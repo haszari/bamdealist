@@ -167,6 +167,10 @@ button:active {
   padding: 1em $margin;
 }
 
+.editor {
+  background-color: $colour-b;
+}
+
 .article:nth-child(even) {
   background-color: $colour-c;
 }

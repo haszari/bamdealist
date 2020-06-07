@@ -57,7 +57,7 @@ function HydratedEditorView() {
   }, [ id ] );
 
   return (
-    <div className='app editor'>
+    <div className='app'>
       <Editor />
     </div>
   );

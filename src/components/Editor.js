@@ -65,44 +65,46 @@ function Editor () {
 
   const [ selectedTab, setSelectedTab ] = React.useState("write");
   return (
-      <>
-        <ReactMde
-          classes={{ reactMde: 'editor-title' }}
-          value={ title }
-          disablePreview={ true }
-          toolbarCommands={ [] }
-          minEditorHeight={ 58 }
-          maxEditorHeight={ 58 }
-          onChange={ onChange.bind( null, setTitle ) }
-        />
-        <ReactMde
-          classes={{ reactMde: 'editor-content' }}
-          value={ content }
-          onChange={ onChange.bind( null, setContent ) }
-          selectedTab={ selectedTab }
-          onTabChange={ setSelectedTab }
-          generateMarkdownPreview={ markdown =>
-            Promise.resolve( markdownRenderer( markdown ) )
-          }
-        />
-        <textarea 
-          className='editor-tags'
-          value={ tags }
-          onChange={ event => onChange( setTags, event.target.value ) }
-        />
-        <div className='toolbar article-toolbar'>
-          <Button 
-            variant='contained' 
-            color='primary'
-            startIcon={ <DoneIcon /> }
-            component={ Link } 
-            to={ articleUrl( item._id ) } 
-            disabled={ dirty || saving }
-          >
-            Done
-          </Button>
-        </div>
-      </>
+    <>
+    <div className='editor'>
+      <ReactMde
+        classes={{ reactMde: 'editor-title' }}
+        value={ title }
+        disablePreview={ true }
+        toolbarCommands={ [] }
+        minEditorHeight={ 58 }
+        maxEditorHeight={ 58 }
+        onChange={ onChange.bind( null, setTitle ) }
+      />
+      <ReactMde
+        classes={{ reactMde: 'editor-content' }}
+        value={ content }
+        onChange={ onChange.bind( null, setContent ) }
+        selectedTab={ selectedTab }
+        onTabChange={ setSelectedTab }
+        generateMarkdownPreview={ markdown =>
+          Promise.resolve( markdownRenderer( markdown ) )
+        }
+      />
+      <textarea 
+        className='editor-tags'
+        value={ tags }
+        onChange={ event => onChange( setTags, event.target.value ) }
+      />
+    </div>
+      <div className='toolbar article-toolbar'>
+        <Button 
+          variant='contained' 
+          color='primary'
+          startIcon={ <DoneIcon /> }
+          component={ Link } 
+          to={ articleUrl( item._id ) } 
+          disabled={ dirty || saving }
+        >
+          Done
+        </Button>
+      </div>
+    </>
   );
 }
 
