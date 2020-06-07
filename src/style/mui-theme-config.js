@@ -2,6 +2,9 @@
 
 const theme = {
   palette: {
+    background: {
+      default: '#a00000',
+    },
     primary: {
       main: '#3a1c01',
       contrastText: '#d2c2bc',
@@ -14,7 +17,6 @@ const theme = {
     fontFamily: [ 'Roboto', 'Helvetica', 'Arial', 'sans-serif' ],
     button: {
       textTransform: 'none',
-
     }
   },
 };
