@@ -59,11 +59,11 @@ button:active {
   padding: 1em $margin;
   background: $header-bg;
 
-  // a, a:visited {
-  //   color: $link;
-  //   text-decoration: none;
-  //   font-weight: 500;
-  // }
+  a.iconbutton , a.iconbutton :visited {
+    color: $link;
+    text-decoration: none;
+    font-weight: 500;
+  }
 }
 
 .navigation {

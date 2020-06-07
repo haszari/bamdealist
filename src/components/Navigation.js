@@ -10,7 +10,7 @@ import Shuffle from './Shuffle';
 function Navigation() {
   return (
     <div className='toolbar navigation'>
-      <Link className='home' to='/'><ApartmentIcon className='icon' /></Link>
+      <Link className='iconbutton home' to='/'><ApartmentIcon className='icon' /></Link>
       <Search />
       <Shuffle />
     </div>
