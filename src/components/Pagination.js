@@ -28,9 +28,9 @@ function Pagination() {
   const prevPage = params.toString();
 
   return (
-    <div className='pagination'>
-      <Link className='previousPage' to={ `/?${ prevPage }` } ><ArrowBackIcon className='icon' /></Link>
-      <Link className='nextPage' to={ `/?${ nextPage }` } ><ArrowForwardIcon className='icon' /></Link>
+    <div className='toolbar pagination'>
+      <Link className='iconbutton previousPage' to={ `/?${ prevPage }` } ><ArrowBackIcon className='icon' /></Link>
+      <Link className='iconbutton nextPage' to={ `/?${ nextPage }` } ><ArrowForwardIcon className='icon' /></Link>
     </div>
   );
 }

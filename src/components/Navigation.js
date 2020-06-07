@@ -9,8 +9,8 @@ import Shuffle from './Shuffle';
 
 function Navigation() {
   return (
-    <div className='navigation'>
-      <Link className='home' to='/'><ApartmentIcon className='icon' /></Link>
+    <div className='toolbar navigation'>
+      <Link className='iconbutton home' to='/'><ApartmentIcon className='icon' /></Link>
       <Search />
       <Shuffle />
     </div>

@@ -1,9 +1,14 @@
 @import './Colours.scss';
 
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Merriweather+Sans:ital,wght@0,300;0,400;0,800;1,300;1,400;1,700&display=swap');
+
 $margin: 2em;
 $header-icon-size: 50px;
 $heading-font-size: 2em;
 $font-size: 1.2em;
+
+$font-body: 'Merriweather', sans-serif;
+$font-editor: 'Inconsolata', monospace;
 
 body {
   background-color: $header-bg;
@@ -13,12 +18,6 @@ body {
 
 pre {
   white-space: pre-wrap;
-}
-
-a, a:visited {
-  color: $link;
-  text-decoration: none;
-  font-weight: 500;
 }
 
 // reset search input
@@ -57,12 +56,24 @@ button:active {
     transform: scale(0.99);
 }
 
-.navigation {
+.toolbar {
   display: flex;
   justify-content: space-between;
   padding: 1em $margin;
   background: $header-bg;
 
+  a.iconbutton , a.iconbutton :visited {
+    color: $link;
+    text-decoration: none;
+    font-weight: 500;
+  }
+}
+
+.article-toolbar {
+  justify-content: flex-end;
+}
+
+.navigation {
   > * {
     display: inline-flex;
   }
@@ -163,6 +174,14 @@ button:active {
   padding: 1em $margin;
 }
 
+.editor {
+  background-color: $colour-b;
+
+  textarea.mde-text {
+    font-family: $font-editor;
+  }
+}
+
 .article:nth-child(even) {
   background-color: $colour-c;
 }
@@ -178,6 +197,12 @@ button:active {
 
   h1, h2, h3, h4, h5, h6 {
     margin: 0.5em 0 1em;
+  }
+
+  a, a:visited {
+    color: $link;
+    text-decoration: none;
+    font-weight: 500;
   }
 
   .content {

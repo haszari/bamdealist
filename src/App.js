@@ -9,6 +9,9 @@ import {
   useParams,
 } from 'react-router-dom';
 
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 import {
   setPagination,
   setFilterTags,
@@ -39,6 +42,8 @@ import Editor from './components/Editor';
 
 import './style/App.scss';
 
+import themeConfig from './style/mui-theme-config';
+
 function useQuery() {
   return new URLSearchParams( useLocation().search );
 }
@@ -52,7 +57,7 @@ function HydratedEditorView() {
   }, [ id ] );
 
   return (
-    <div className='app editor'>
+    <div className='app'>
       <Editor />
     </div>
   );
@@ -143,30 +148,35 @@ function HydratedListView() {
   return ( <ListView /> );
 }
 
+const muiTheme = createMuiTheme( themeConfig );
+
 function App() {
 
   return (
     <Router>
       <Provider store={ store }>
-        <Navigation />
+        <ThemeProvider theme={ muiTheme }>
+          <CssBaseline />
+          <Navigation />
 
-        <Switch>
-          <Route path="/wurd" children={ 
-            <RandomWurdView />
-          } />
-          <Route path="/item/:id" children={ 
-            <HydratedArticleView />
-          } />
-          <Route path="/edit/:id" children={ 
-            <HydratedEditorView />
-          } />
-          <Route path="/lucky" children={ 
-            <HydratedShuffleView />
-          } />
-          <Route path="/" children={ 
-            <HydratedListView />
-          } />
-        </Switch>
+          <Switch>
+            <Route path="/wurd" children={ 
+              <RandomWurdView />
+            } />
+            <Route path="/item/:id" children={ 
+              <HydratedArticleView />
+            } />
+            <Route path="/edit/:id" children={ 
+              <HydratedEditorView />
+            } />
+            <Route path="/lucky" children={ 
+              <HydratedShuffleView />
+            } />
+            <Route path="/" children={ 
+              <HydratedListView />
+            } />
+          </Switch>
+        </ThemeProvider>
       </Provider>
     </Router>
   );
