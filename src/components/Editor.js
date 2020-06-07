@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
+import DoneIcon from '@material-ui/icons/Done';
 
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -89,15 +90,18 @@ function Editor () {
           value={ tags }
           onChange={ event => onChange( setTags, event.target.value ) }
         />
-        <Button 
-          variant='contained' 
-          color='primary'
-          component={ Link } 
-          to={ articleUrl( item._id ) } 
-          disabled={ dirty || saving }
-        >
-          Done
-        </Button>
+        <div className='toolbar article-toolbar'>
+          <Button 
+            variant='contained' 
+            color='primary'
+            startIcon={ <DoneIcon /> }
+            component={ Link } 
+            to={ articleUrl( item._id ) } 
+            disabled={ dirty || saving }
+          >
+            Done
+          </Button>
+        </div>
       </>
   );
 }

@@ -9,7 +9,7 @@ import Shuffle from './Shuffle';
 
 function Navigation() {
   return (
-    <div className='navigation'>
+    <div className='toolbar navigation'>
       <Link className='home' to='/'><ApartmentIcon className='icon' /></Link>
       <Search />
       <Shuffle />

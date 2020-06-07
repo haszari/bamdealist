@@ -42,15 +42,7 @@ import Editor from './components/Editor';
 
 import './style/App.scss';
 
-const theme = createMuiTheme( {
-  typography: {
-    fontFamily: [ 'Roboto', 'Helvetica', 'Arial', 'sans-serif' ],
-    button: {
-      textTransform: 'none',
-    }
-  },
-} );
-
+import themeConfig from './style/mui-theme-config';
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
@@ -156,12 +148,14 @@ function HydratedListView() {
   return ( <ListView /> );
 }
 
+const muiTheme = createMuiTheme( themeConfig );
+
 function App() {
 
   return (
     <Router>
       <Provider store={ store }>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={ muiTheme }>
           <CssBaseline />
           <Navigation />
 
