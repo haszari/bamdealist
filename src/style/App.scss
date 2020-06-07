@@ -66,6 +66,10 @@ button:active {
   }
 }
 
+.article-toolbar {
+  justify-content: flex-end;
+}
+
 .navigation {
   > * {
     display: inline-flex;
