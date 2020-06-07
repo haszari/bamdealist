@@ -89,7 +89,15 @@ function Editor () {
           value={ tags }
           onChange={ event => onChange( setTags, event.target.value ) }
         />
-        <Button component={ Link } to={ articleUrl( item._id ) } disabled={ dirty || saving }>Done</Button>
+        <Button 
+          variant='contained' 
+          color='primary'
+          component={ Link } 
+          to={ articleUrl( item._id ) } 
+          disabled={ dirty || saving }
+        >
+          Done
+        </Button>
       </>
   );
 }

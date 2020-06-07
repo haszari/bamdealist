@@ -26,7 +26,14 @@ function Item() {
         <TagList tags={ item.tags } /> 
       </div> 
       <div className='article-toolbar'>
-        <Button component={ Link } to={ editArticleUrl( item._id ) }>Edit</Button>
+        <Button 
+          variant='contained' 
+          color='primary'
+          component={ Link }
+          to={ editArticleUrl( item._id ) }
+        >
+          Edit
+        </Button>
       </div>
     </>
   );
