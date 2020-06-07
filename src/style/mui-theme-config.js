@@ -14,7 +14,7 @@ const theme = {
     borderRadius: 2,
   },
   typography: {
-    fontFamily: [ 'Roboto', 'Helvetica', 'Arial', 'sans-serif' ],
+    fontFamily: [ 'Merriweather', 'sans-serif' ],
     button: {
       textTransform: 'none',
     }
