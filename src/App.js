@@ -12,6 +12,9 @@ import {
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 import {
   setPagination,
   setFilterTags,
@@ -43,6 +46,8 @@ import Editor from './components/Editor';
 import './style/App.scss';
 
 import themeConfig from './style/mui-theme-config';
+
+const muiTheme = createMuiTheme( themeConfig );
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
@@ -94,11 +99,16 @@ function HydratedArticleView() {
 
 function ListView() {
   return (
-    <div className='app'>
-      <TagCloud />
-      <Items />
-      <Pagination />
-    </div>
+    <>
+      <Fab color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
+      <div className='app'>
+        <TagCloud />
+        <Items />
+        <Pagination />
+      </div>
+    </>
    );
 }
 
@@ -147,8 +157,6 @@ function HydratedListView() {
 
   return ( <ListView /> );
 }
-
-const muiTheme = createMuiTheme( themeConfig );
 
 function App() {
 
