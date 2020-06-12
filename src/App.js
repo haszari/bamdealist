@@ -1,10 +1,14 @@
 
 import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
+import {
+  Provider,
+  useSelector,
+} from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
   useLocation,
   useParams,
 } from 'react-router-dom';
@@ -30,7 +34,10 @@ import {
 import {
   setId,
   hydrateArticle,
+  newArticle,
 } from './store/article/actions';
+
+import { getRedirect } from './store/app/selectors';
 
 import store from './store';
 
@@ -96,11 +103,25 @@ function HydratedArticleView() {
   return ( <ArticleView /> );
 }
 
+function Redirector() {
+  const redirectUrl = useSelector( getRedirect );
+  return redirectUrl ? ( <Redirect to={ redirectUrl } /> ) : null;
+}
 
 function ListView() {
   return (
     <>
-      <Fab color="primary" aria-label="add">
+      <Fab
+        color='primary'
+        aria-label='add'
+        onClick={ () => store.dispatch( newArticle( {
+          userTags: 'test bla',
+          // We need to supply these - there's no defaults!
+          // TODO add defaults on server
+          title: '',
+          content: '',
+        } ) ) }
+      >
         <AddIcon />
       </Fab>
       <div className='app'>
@@ -163,6 +184,7 @@ function App() {
   return (
     <Router>
       <Provider store={ store }>
+        <Redirector />
         <ThemeProvider theme={ muiTheme }>
           <CssBaseline />
           <Navigation />
