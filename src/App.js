@@ -37,6 +37,8 @@ import {
   newArticle,
 } from './store/article/actions';
 
+import { getFilter } from './store/list/selectors';
+
 import { getRedirect } from './store/app/selectors';
 
 import store from './store';
@@ -109,13 +111,14 @@ function Redirector() {
 }
 
 function ListView() {
+  const { tags: filterTags } = useSelector( getFilter );
   return (
     <>
       <Fab
         color='primary'
         aria-label='add'
         onClick={ () => store.dispatch( newArticle( {
-          userTags: 'test bla',
+          userTags: filterTags.join( ' ' ),
           // We need to supply these - there's no defaults!
           // TODO add defaults on server
           title: '',

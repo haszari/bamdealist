@@ -44,6 +44,7 @@ export const newArticle = ( { title, content, userTags }  ) => async ( dispatch,
     if ( 200 !== response.status ) {
     }
     const item = await response.json();
+    dispatch( articleReceived( item ) );
     dispatch( redirect( editArticleUrl( item._id ) ) );
   }
   catch ( error ) {
