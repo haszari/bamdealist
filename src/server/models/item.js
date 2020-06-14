@@ -280,6 +280,8 @@ function extractTagCreatedDate(item) {
          case 'dec':
             itemCreatedEstimate.setMonth(11);
             break;
+         default: 
+            break;
       }
 
       const rxYearMonthDay = /(\d\d\d\d)(\d\d)(\d\d)/;
