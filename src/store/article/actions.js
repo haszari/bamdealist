@@ -1,12 +1,15 @@
 import { createAction } from '@reduxjs/toolkit';
 
 import { apiBase } from '../../lib/api';
+import { editArticleUrl } from '../../lib/route-url';
+
+import { redirect } from '../app/actions';
 
 import { getId, getArticle } from './selectors';
 
 export const setId = createAction( 'article/setArticleId' );
 
-export const articleReceived = createAction( 'article/itemsReceived' );
+export const articleReceived = createAction( 'article/itemReceived' );
 
 export const setSaving = createAction( 'article/setSaving' );
 
@@ -22,6 +25,31 @@ export const hydrateArticle = () => async ( dispatch, state ) => {
   const id = getId( current );
   const response = await fetchArticle( { id } );
   dispatch( articleReceived( response ) );
+}
+
+export const newArticle = ( { title, content, userTags }  ) => async ( dispatch, state ) => {
+  const newArticle = { 
+    title, 
+    content,
+    userTags,
+  };
+  try {  
+    const response = await fetch( `${ apiBase }Item`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify( newArticle ),
+    } );
+    if ( 200 !== response.status ) {
+    }
+    const item = await response.json();
+    dispatch( articleReceived( item ) );
+    dispatch( redirect( editArticleUrl( item._id ) ) );
+  }
+  catch ( error ) {
+  }
+
 }
 
 export const persistArticle = ( { id, title, content, userTags }  ) => async ( dispatch, state ) => {

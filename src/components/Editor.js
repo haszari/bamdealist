@@ -33,13 +33,13 @@ function Editor () {
   // The item is loaded dynamically after we are mounted; 
   // populate the state after load.
   useEffect( () => {
-    if ( item.title && false === title ) {
+    if ( item.hasOwnProperty( 'title' ) && false === title ) {
       setTitle( item.title );
     }
-    if ( item.content && false === content ) {
+    if ( item.hasOwnProperty( 'content' ) && false === content ) {
       setContent( item.content );
     }
-    if ( item.userTags && false === tags ) {
+    if ( item.hasOwnProperty( 'userTags' ) && false === tags ) {
       setTags( item.userTags );
     }
   }, [ item, title, content, tags ] );

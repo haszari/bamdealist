@@ -1,16 +1,23 @@
 
 import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
+import {
+  Provider,
+  useSelector,
+} from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
   useLocation,
   useParams,
 } from 'react-router-dom';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 import {
   setPagination,
@@ -27,7 +34,12 @@ import {
 import {
   setId,
   hydrateArticle,
+  newArticle,
 } from './store/article/actions';
+
+import { getFilter } from './store/list/selectors';
+
+import { getRedirect } from './store/app/selectors';
 
 import store from './store';
 
@@ -43,6 +55,8 @@ import Editor from './components/Editor';
 import './style/App.scss';
 
 import themeConfig from './style/mui-theme-config';
+
+const muiTheme = createMuiTheme( themeConfig );
 
 function useQuery() {
   return new URLSearchParams( useLocation().search );
@@ -91,14 +105,34 @@ function HydratedArticleView() {
   return ( <ArticleView /> );
 }
 
+function Redirector() {
+  const redirectUrl = useSelector( getRedirect );
+  return redirectUrl ? ( <Redirect to={ redirectUrl } /> ) : null;
+}
 
 function ListView() {
+  const { tags: filterTags } = useSelector( getFilter );
   return (
-    <div className='app'>
-      <TagCloud />
-      <Items />
-      <Pagination />
-    </div>
+    <>
+      <Fab
+        color='primary'
+        aria-label='add'
+        onClick={ () => store.dispatch( newArticle( {
+          userTags: filterTags.join( ' ' ),
+          // We need to supply these - there's no defaults!
+          // TODO add defaults on server
+          title: '',
+          content: '',
+        } ) ) }
+      >
+        <AddIcon />
+      </Fab>
+      <div className='app'>
+        <TagCloud />
+        <Items />
+        <Pagination />
+      </div>
+    </>
    );
 }
 
@@ -148,13 +182,12 @@ function HydratedListView() {
   return ( <ListView /> );
 }
 
-const muiTheme = createMuiTheme( themeConfig );
-
 function App() {
 
   return (
     <Router>
       <Provider store={ store }>
+        <Redirector />
         <ThemeProvider theme={ muiTheme }>
           <CssBaseline />
           <Navigation />

@@ -29,11 +29,11 @@ function generateTitle(item) {
    return title;
 };
 
-function generateTextContent(item) {
+function generateTextContent( item ) {
    var textContent = '';
    var renderer = new PlainTextRenderer();
-   textContent += ' ' + marked(item.content, { renderer: renderer });
-   textContent += ' ' + marked(item.title, { renderer: renderer });
+   textContent += ' ' + marked( item.content || '', { renderer: renderer } );
+   textContent += ' ' + marked( item.title || '', { renderer: renderer } );
    return textContent;
 };
 
@@ -280,6 +280,8 @@ function extractTagCreatedDate(item) {
          case 'dec':
             itemCreatedEstimate.setMonth(11);
             break;
+         default: 
+            break;
       }
 
       const rxYearMonthDay = /(\d\d\d\d)(\d\d)(\d\d)/;
@@ -327,27 +329,25 @@ schema.methods.generateOriginatedDateFromTags = function() {
 };
 
 schema.methods.setImportDateNow = function() {
-   var item = this;
    this.imported = Date.now();
 };
 
 
 schema.methods.normalise = function() {
    var item = this;
-   if (!this.title)
-      this.title = generateTitle(item);
+   if ( ! this.title )
+      this.title = generateTitle( item );
 
    // system-managed fields
    this.tags = indexHashtags(item);
-   this.lowerCaseTags = _.map(this.tags, tag => tag.toLowerCase());
-   this.textContent = generateTextContent(item);
+   this.lowerCaseTags = _.map( this.tags, tag => tag.toLowerCase() );
+   this.textContent = generateTextContent( item );
 };
 
 // Once only (i.e. when importing) we need to extract tags from context.
 // We put these in userTags so they user can tweak them as needed or use as-is.
 // Note that normalise() (above) processes userTags, so this should be run first.
 schema.methods.importContextTags = function() {
-   var item = this;
    this.userTags = appendTagsFromContext(this.context, this.userTags);
 };
 
