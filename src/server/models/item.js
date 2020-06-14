@@ -327,7 +327,6 @@ schema.methods.generateOriginatedDateFromTags = function() {
 };
 
 schema.methods.setImportDateNow = function() {
-   var item = this;
    this.imported = Date.now();
 };
 
@@ -338,7 +337,7 @@ schema.methods.normalise = function() {
       this.title = generateTitle( item );
 
    // system-managed fields
-   this.tags.push( ...indexHashtags(item) );
+   this.tags = indexHashtags(item);
    this.lowerCaseTags = _.map( this.tags, tag => tag.toLowerCase() );
    this.textContent = generateTextContent( item );
 };
