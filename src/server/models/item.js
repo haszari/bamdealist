@@ -350,7 +350,7 @@ schema.methods.normalise = function() {
 
 // Once only (i.e. when importing) we need to extract tags from context.
 // We put these in userTags so they user can tweak them as needed or use as-is.
-// Note that normalise() (above) processes userTags, so this should be run first.
+// Note that normalise() (above) processes userTags (via indexHashtags), so this should be run first.
 schema.methods.importContextTags = function() {
    this.userTags = appendTagsFromContext(this.context, this.userTags);
 };

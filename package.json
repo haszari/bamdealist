@@ -34,6 +34,7 @@
   "scripts": {
     "docker:start": "docker-compose up -d",
     "import": "node src/server/scripts/import",
+    "normalise": "node src/server/scripts/normalise-db",
     "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
