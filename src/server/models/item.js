@@ -1,7 +1,7 @@
 import * as mdealib from '../../lib/mdealib.js';
 
 import mongoose from 'mongoose';
-import hashtag from 'hashtag';
+import hashtagRegex from 'hashtag-regex';
 import marked from 'marked';
 import PlainTextRenderer from 'marked-plaintext';
 import _ from 'lodash';
@@ -63,17 +63,21 @@ function normaliseTagsArray(tags) {
 
 // returns array of tags for each #hashtag in md (hashes removed!)
 function parseHashtags(md) {
-   var tags = [];
-   if (md) {
-      var hashtags = hashtag.parse(md);
-      var parserElements = hashtags.tokens;
-      // keep only tags
-      tags = _.filter(parserElements, element => {
-         return (element.type === 'tag');
-      });
-      tags = _.map(tags, 'tag');
-   }
-   return tags;
+  if ( ! md ) {
+    return [];
+  }
+
+  let tags = [];
+
+  const regex = hashtagRegex();
+  let match = regex.exec( md ) 
+  while ( match ) {
+    const tag = match[0];
+    tags.push( tag.slice( 1 ) );
+    match = regex.exec( md );
+  }  
+
+  return tags;
 };
 
 // returns array of tags for each "entity" in md
