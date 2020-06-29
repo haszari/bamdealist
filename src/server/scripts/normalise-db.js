@@ -4,9 +4,9 @@
 
 import mongoose from 'mongoose';
 
-import ItemModel from '../models/item.js';
+import ItemModel from '../models/item';
 
-import connectToDb from '../db/connection.js';
+import connectToDb from '../db/connection';
 let db = connectToDb();
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -16,29 +16,11 @@ db.once('open', function() {
       let savePromises = [];
    
       items.forEach(item => {
-         const oldTags = item.tags;
-         // in previous runs I've needed to regenerate tags from context
-         // now I just want to normalise
-         // item.importContextTags();
+         item.importContextTags();
          // this is not needed explicitly;
          // as it's our pre save middleware (see `models/item`)
-         item.normalise(); 
+         //item.normalise(); 
          savePromises.push(item.save());
-         
-         const oldTagsStr = oldTags.join( ' ' );
-         const newTagsStr = item.tags.join( ' ' );
-         if ( item.tags.length > oldTags.length ) {
-            console.log( `😀 normalise added tags to item ${ item._id }:` );
-            console.log( `  ${ oldTagsStr }` );
-            console.log( `  ${ newTagsStr }` );
-            console.log( '' );
-         }
-         else if ( item.tags.length < oldTags.length ) {
-            console.log( `🧐 normalise LOST TAGS from item ${ item._id }:` );
-            console.log( `  ${ oldTagsStr }` );
-            console.log( `  ${ newTagsStr }` );
-            console.log( '' );
-         }
       });
 
       Promise.all(savePromises).then(function() {

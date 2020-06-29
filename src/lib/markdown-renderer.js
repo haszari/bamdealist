@@ -1,7 +1,7 @@
 // utilities for rendering markdown to html, including generating hashtag links
 
 import marked from 'marked';
-import hashtagRegex from 'hashtag-regex';
+import hashtag from 'hashtag';
 
 import { listUrl } from './route-url';
 
@@ -9,19 +9,26 @@ import { listUrl } from './route-url';
 // (so they are more readable in flowing text) 
 // or converting to a link.
 function processHashtags( md, asLinks = true ) {
-  if ( ! md ) { return; }
+   let expandedMd = md;
 
-  const regex = hashtagRegex();
-  
-  const expandedMd = md.replace( regex, ( htag ) => {
-    const tag = htag.slice( 1 );
-    if ( asLinks ) {
-      const url = listUrl( { tags: [ tag ] } );
-      return `[${ tag }](${ url })`;
-    }
+   const hashtags = hashtag.parse(md);
+   const parserElements = hashtags.tokens;
 
-    return tag;
-  } );
+   parserElements.map(element => {
+      if ( element.type === 'text' ) {
+         return element;
+      }
+      const url = listUrl( { tags: [ element.tag ] } );
+      element.text = element.tag;
+      if ( asLinks ) {
+         element.text = `[${ element.tag }](${ url })`;
+      }
+      return element;
+   });
+
+   expandedMd = parserElements.reduce( ( memo, element ) => {
+      return memo + element.text;
+   }, '' );
 
    return expandedMd;
 };
