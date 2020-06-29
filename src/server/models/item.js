@@ -1,7 +1,7 @@
 import * as mdealib from '../../lib/mdealib.js';
 
 import mongoose from 'mongoose';
-import hashtag from 'hashtag';
+import hashtagRegex from 'hashtag-regex';
 import marked from 'marked';
 import PlainTextRenderer from 'marked-plaintext';
 import _ from 'lodash';
@@ -63,17 +63,21 @@ function normaliseTagsArray(tags) {
 
 // returns array of tags for each #hashtag in md (hashes removed!)
 function parseHashtags(md) {
-   var tags = [];
-   if (md) {
-      var hashtags = hashtag.parse(md);
-      var parserElements = hashtags.tokens;
-      // keep only tags
-      tags = _.filter(parserElements, element => {
-         return (element.type === 'tag');
-      });
-      tags = _.map(tags, 'tag');
-   }
-   return tags;
+  if ( ! md ) {
+    return [];
+  }
+
+  let tags = [];
+
+  const regex = hashtagRegex();
+  let match = regex.exec( md ) 
+  while ( match ) {
+    const tag = match[0];
+    tags.push( tag.slice( 1 ) );
+    match = regex.exec( md );
+  }  
+
+  return tags;
 };
 
 // returns array of tags for each "entity" in md
@@ -346,7 +350,7 @@ schema.methods.normalise = function() {
 
 // Once only (i.e. when importing) we need to extract tags from context.
 // We put these in userTags so they user can tweak them as needed or use as-is.
-// Note that normalise() (above) processes userTags, so this should be run first.
+// Note that normalise() (above) processes userTags (via indexHashtags), so this should be run first.
 schema.methods.importContextTags = function() {
    this.userTags = appendTagsFromContext(this.context, this.userTags);
 };
