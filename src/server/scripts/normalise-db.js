@@ -22,7 +22,7 @@ db.once('open', function() {
          // item.importContextTags();
          // this is not needed explicitly;
          // as it's our pre save middleware (see `models/item`)
-         //item.normalise(); 
+         item.normalise(); 
          savePromises.push(item.save());
          
          const oldTagsStr = oldTags.join( ' ' );
