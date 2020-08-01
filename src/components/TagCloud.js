@@ -50,7 +50,7 @@ function TagCloud() {
   const relatedTags = tags.filter( tag => {
     return ! filterTags.includes( tag.tag );
   } );
-  const maxHitCount = relatedTags[0].count;
+  const maxHitCount = relatedTags[0]?.count;
 
   const related = relatedTags.map( ( tag ) => {
     return ( 
