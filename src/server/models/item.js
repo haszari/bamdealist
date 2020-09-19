@@ -84,38 +84,52 @@ function parseHashtags(md) {
 // entities are bold or italics, e.g. __Producer__ (bold) or *Work* (italics)
 // whitespace is collapsed (may revise this)
 function parseEntityTags(md) {
-   var tags = [];
-   var renderer = new marked.Renderer();
-   var strongs = [];
-   var ems = [];
-   renderer.strong = function(text) {
-      strongs.push(text);
-      return text;
-   }
-   renderer.em = function(text) {
-      ems.push(text);
-      return text;
+   if ( ! md ) {
+      return [];
    }
 
-   if (md) {
-      var tokens = marked.lexer(md);
-      _.each(tokens, token => {
-         // console.log(token);
-         if (token.text) {
-            marked(token.text, { renderer: renderer });
-         }
-      });
-      tags = strongs.concat(ems);
-      tags = tags.map(tag => {
-         var stripped = tag;
-         // strip html entities
-         stripped = stripped.replace(/&.+;/g, '');
-         // strip nonword chars
-         stripped = stripped.replace(/\W/g, '');
-         return stripped;
-      });
-      // console.log(tags);
-   }
+   let tags = [];
+
+   // Declare a renderer that simply accumulates all
+   // bold/italic token text in arrays.
+   let strongs = [];
+   let ems = [];
+   const renderer = {
+      strong: (text) => {
+         strongs.push(text);
+         return text;
+      },
+      em: (text) => {
+         ems.push(text);
+         return text;
+      }
+   };
+
+   // Split the markdown content into tokens.
+   // For each text token, parse and look for 
+   // bold/italic inline formatting.
+   const tokens = marked.lexer(md);
+   _.each(tokens, token => {
+      // console.log(token);
+      if (token.text) {
+         marked(token.text, { renderer: renderer });
+      }
+   });
+
+   // Single array of all bold/italic items => tags.
+   tags = strongs.concat(ems);
+
+   // Process each tag content to ensure is a single "word".
+   tags = tags.map(tag => {
+      let stripped = tag;
+      // strip html entities
+      stripped = stripped.replace(/&.+;/g, '');
+      // strip nonword chars
+      stripped = stripped.replace(/\W/g, '');
+      return stripped;
+   });
+   // console.log(tags);
+
    return tags;
 };
 
