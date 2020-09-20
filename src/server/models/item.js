@@ -90,31 +90,22 @@ function parseEntityTags(md) {
 
    let tags = [];
 
-   // Declare a renderer that simply accumulates all
-   // bold/italic token text in arrays.
+   // Hook walkTokens and if we see bold or italic anywhere in the tree,
+   // note down as a tag.
    let strongs = [];
    let ems = [];
-   const renderer = {
-      strong: (text) => {
-         strongs.push(text);
-         return text;
-      },
-      em: (text) => {
-         ems.push(text);
-         return text;
+   marked.use( { 
+      walkTokens: token => {
+         // console.log( token );
+         if ( token.type === 'em' ) {
+            strongs.push( token.text );
+         }
+         if ( token.type === 'strong' ) {
+            strongs.push( token.text );
+         }
       }
-   };
-
-   // Split the markdown content into tokens.
-   // For each text token, parse and look for 
-   // bold/italic inline formatting.
-   const tokens = marked.lexer(md);
-   _.each(tokens, token => {
-      // console.log(token);
-      if (token.text) {
-         marked(token.text, { renderer: renderer });
-      }
-   });
+    } );
+   marked(md);
 
    // Single array of all bold/italic items => tags.
    tags = strongs.concat(ems);
@@ -126,6 +117,7 @@ function parseEntityTags(md) {
       stripped = stripped.replace(/&.+;/g, '');
       // strip nonword chars
       stripped = stripped.replace(/\W/g, '');
+      // console.log( `Saving stripped tag: ${ stripped }`)
       return stripped;
    });
    // console.log(tags);
