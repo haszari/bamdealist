@@ -32,6 +32,11 @@ function generateTitle(item) {
 function generateTextContent( item ) {
    var textContent = '';
    var renderer = new PlainTextRenderer();
+   // Patch `marked-plaintext` which does not yet support checkbox.
+   // Maybe should implement our own plain text renderer or submit a patch.
+   renderer.checkbox = ( text ) => {
+      return text;
+   }
    textContent += ' ' + marked( item.content || '', { renderer: renderer } );
    textContent += ' ' + marked( item.title || '', { renderer: renderer } );
    return textContent;
