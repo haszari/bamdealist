@@ -32,6 +32,11 @@ function generateTitle(item) {
 function generateTextContent( item ) {
    var textContent = '';
    var renderer = new PlainTextRenderer();
+   // Patch `marked-plaintext` which does not yet support checkbox.
+   // Maybe should implement our own plain text renderer or submit a patch.
+   renderer.checkbox = ( text ) => {
+      return text;
+   }
    textContent += ' ' + marked( item.content || '', { renderer: renderer } );
    textContent += ' ' + marked( item.title || '', { renderer: renderer } );
    return textContent;
@@ -84,38 +89,46 @@ function parseHashtags(md) {
 // entities are bold or italics, e.g. __Producer__ (bold) or *Work* (italics)
 // whitespace is collapsed (may revise this)
 function parseEntityTags(md) {
-   var tags = [];
-   var renderer = new marked.Renderer();
-   var strongs = [];
-   var ems = [];
-   renderer.strong = function(text) {
-      strongs.push(text);
-      return text;
-   }
-   renderer.em = function(text) {
-      ems.push(text);
-      return text;
+   if ( ! md ) {
+      return [];
    }
 
-   if (md) {
-      var tokens = marked.lexer(md);
-      _.each(tokens, token => {
-         // console.log(token);
-         if (token.text) {
-            marked(token.text, { renderer: renderer });
+   let tags = [];
+
+   // Hook walkTokens and if we see bold or italic anywhere in the tree,
+   // note down as a tag.
+   let strongs = [];
+   let ems = [];
+   marked(
+      md, 
+      { 
+         walkTokens: token => {
+            // console.log( token );
+            if ( token.type === 'em' ) {
+               strongs.push( token.text );
+            }
+            if ( token.type === 'strong' ) {
+               strongs.push( token.text );
+            }
          }
-      });
-      tags = strongs.concat(ems);
-      tags = tags.map(tag => {
-         var stripped = tag;
-         // strip html entities
-         stripped = stripped.replace(/&.+;/g, '');
-         // strip nonword chars
-         stripped = stripped.replace(/\W/g, '');
-         return stripped;
-      });
-      // console.log(tags);
-   }
+      }
+   );
+
+   // Single array of all bold/italic items => tags.
+   tags = strongs.concat(ems);
+
+   // Process each tag content to ensure is a single "word".
+   tags = tags.map(tag => {
+      let stripped = tag;
+      // strip html entities
+      stripped = stripped.replace(/&.+;/g, '');
+      // strip nonword chars
+      stripped = stripped.replace(/\W/g, '');
+      // console.log( `Saving stripped tag: ${ stripped }`)
+      return stripped;
+   });
+   // console.log(tags);
+
    return tags;
 };
 
