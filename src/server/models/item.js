@@ -94,18 +94,20 @@ function parseEntityTags(md) {
    // note down as a tag.
    let strongs = [];
    let ems = [];
-   marked.use( { 
-      walkTokens: token => {
-         // console.log( token );
-         if ( token.type === 'em' ) {
-            strongs.push( token.text );
-         }
-         if ( token.type === 'strong' ) {
-            strongs.push( token.text );
+   marked(
+      md, 
+      { 
+         walkTokens: token => {
+            // console.log( token );
+            if ( token.type === 'em' ) {
+               strongs.push( token.text );
+            }
+            if ( token.type === 'strong' ) {
+               strongs.push( token.text );
+            }
          }
       }
-    } );
-   marked(md);
+   );
 
    // Single array of all bold/italic items => tags.
    tags = strongs.concat(ems);
