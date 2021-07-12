@@ -48,6 +48,7 @@ import TagCloud from './components/TagCloud';
 import Items from './components/Items';
 import Item from './components/Item';
 import RandomWurd from './components/RandomWurd';
+import DragDropImporter from './components/DragDropImporter';
 import Navigation from './components/Navigation';
 import Editor from './components/Editor';
 
@@ -76,6 +77,14 @@ function HydratedEditorView() {
     </div>
   );
  }
+
+function ImporterView() {
+  return (
+    <div className='app'>
+      <DragDropImporter />
+    </div>
+   );
+}
 
 
 function RandomWurdView() {
@@ -193,6 +202,9 @@ function App() {
           <Navigation />
 
           <Switch>
+            <Route path="/import" children={ 
+              <ImporterView />
+            } />
             <Route path="/wurd" children={ 
               <RandomWurdView />
             } />
