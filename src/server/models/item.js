@@ -213,11 +213,33 @@ var schema = mongoose.Schema({
    //// for real mdealist fields edited by user ...
 
    // these are both markdown
-   title: String,
+   title: String, // item title, or work title (e.g. song, Achy Breaky Heart)
    content: String,
 
    // plain text - we store what the user types, tags are space delimited words
    userTags: String,
+
+   //-- new / experimental
+   // song-specific fields (or possibly generalise to "work" e.g. song/movie/painting)
+   // (using existing "title" above for song/work title)
+
+   itemType: String, // string or enum; item/diary/entry for current stuff, song for songs, etc
+   
+   // producer/artist - not sure of name
+   producer: String, // optional, producer or artist of the work (e.g. Billy Ray Cyrus)
+
+   duration: Number, // time type? do I need this, e.g. to search/filter by duration
+   
+   // should this store comma-separated, mirror of iTunes/id3 format? or should it be imported to array?
+   // should this just use tags below direct?
+   genres: String, // user-entered genres, comma-separated
+
+   // metadata / ids to link to other systems
+   externalIds: [ String ], // array/object, spotifyId, localFilePath, etc
+
+   // now we get into albums etc - container references - do we need this, how to represent?
+   // we want to refer to spotify for all that 
+   // BUT we need to cache some of it to do grouping/sorting
 
    //// for real fields generated/managed by system ...
   
