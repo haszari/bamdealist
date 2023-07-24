@@ -17,7 +17,7 @@
     "express-restify-mongoose": "6.1.2",
     "hashtag-regex": "2.1.0",
     "lodash": "4.17.21",
-    "marked": "1.2.9",
+    "marked": "4.0.10",
     "marked-plaintext": "0.0.2",
     "method-override": "3.0.0",
     "moment": "2.29.4",
