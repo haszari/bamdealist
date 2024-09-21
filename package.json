@@ -14,7 +14,7 @@
     "command-line-args": "5.2.1",
     "connect-history-api-fallback": "1.6.0",
     "express": "4.20.0",
-    "express-restify-mongoose": "6.1.2",
+    "express-restify-mongoose": "9.0.4",
     "hashtag-regex": "2.2.0",
     "lodash": "4.17.21",
     "marked": "1.2.9",
