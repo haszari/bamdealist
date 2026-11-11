@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@material-ui/core": "4.12.4",
+    "@mui/material": "5.0.0",
     "@material-ui/icons": "4.11.3",
     "@reduxjs/toolkit": "1.9.7",
     "@testing-library/jest-dom": "5.17.0",
